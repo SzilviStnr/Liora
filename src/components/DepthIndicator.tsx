@@ -60,8 +60,8 @@ const DepthIndicator: React.FC<DepthIndicatorProps> = ({
   };
 
   return (
-    <div className={`fixed top-6 right-6 z-50 ${className}`}>
-      <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-2xl min-w-[280px]">
+    <div className={`fixed bottom-6 left-6 z-40 ${className}`}>
+      <div className="bg-black/30 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-2xl min-w-[280px]">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">

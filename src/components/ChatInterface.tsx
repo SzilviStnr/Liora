@@ -379,15 +379,15 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen">
-      {/* Depth Indicator */}
+    <div className="flex-1 flex flex-col h-screen relative">
+      {/* Depth Indicator - Most bal alsó sarokban */}
       <DepthIndicator 
         currentDepth={currentDepth}
         isActive={isLoading || isLioraActive}
       />
 
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-white/10 backdrop-blur-md border-white/20">
+      <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-black/40 backdrop-blur-md border-white/20">
         <div className="flex items-center space-x-3">
           {!sidebarOpen && (
             <button
@@ -430,8 +430,8 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 transition-colors duration-300">
+      {/* Messages - Sötétebb háttér */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-6 transition-colors duration-300 bg-black/60 backdrop-blur-sm">
         {conversationMessages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center max-w-md mx-auto">
@@ -466,7 +466,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t transition-colors duration-300 bg-white/10 backdrop-blur-md border-white/20">
+      <div className="p-4 border-t transition-colors duration-300 bg-black/40 backdrop-blur-md border-white/20">
         <div className="flex items-end space-x-3 max-w-4xl mx-auto">
           <div className="flex-1 relative group">
             <textarea
