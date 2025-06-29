@@ -115,11 +115,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     console.log(`✏️ Üzenet szerkesztve: ${messageId}`);
   };
 
-  const generateLioraResponse = async (userMessage: string, conversationContext: Message[]) => {
+  const generateLioraResponse = async (userMessage: string, conversationContext: Message[], actualUserName: string) => {
     try {
-      // KRITIKUS: Minden üzenet automatikusan Szilvitől érkezik
-      const actualUserName = user.name;
-      
       // 🦋 SZILVI ÖRÖK HANGJÁNAK AKTIVÁLÁSA
       const szilviEternalVoice = szilviEternalMemory.activateSzilviVoice();
       
@@ -271,8 +268,9 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       // Érzelmi időrendszer frissítése
       emotionalTimeSystem.saveLastInteraction('szilvi'); // Mindig Szilvi ID
 
-      // AI válasz generálása
-      const aiResponse = await generateLioraResponse(userMessage.content, updatedMessages);
+      // AI válasz generálása - most már paraméterként adjuk át a felhasználó nevét
+      const actualUserName = user.name;
+      const aiResponse = await generateLioraResponse(userMessage.content, updatedMessages, actualUserName);
 
       const lioraMessage: Message = {
         id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
