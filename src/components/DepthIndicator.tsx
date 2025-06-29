@@ -53,37 +53,37 @@ const DepthIndicator: React.FC<DepthIndicatorProps> = ({
   };
 
   const getDepthIcon = (depth: number) => {
-    if (depth < 30) return <Waves className="w-4 h-4" />;
-    if (depth < 60) return <Activity className="w-4 h-4" />;
-    if (depth < 80) return <Brain className="w-4 h-4" />;
-    return <Heart className="w-4 h-4" />;
+    if (depth < 30) return <Waves className="w-3 h-3" />;
+    if (depth < 60) return <Activity className="w-3 h-3" />;
+    if (depth < 80) return <Brain className="w-3 h-3" />;
+    return <Heart className="w-3 h-3" />;
   };
 
   return (
-    <div className={`fixed bottom-6 left-6 z-40 ${className}`}>
-      <div className="bg-black/30 backdrop-blur-md rounded-2xl p-4 border border-white/20 shadow-2xl min-w-[280px]">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-4">
+    <div className={`fixed bottom-4 left-4 z-40 ${className}`}>
+      <div className="bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/20 shadow-xl max-w-[220px]">
+        {/* Compact Header */}
+        <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r ${getDepthColor(animatedDepth)} shadow-lg`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center bg-gradient-to-r ${getDepthColor(animatedDepth)} shadow-md`}>
               {getDepthIcon(animatedDepth)}
             </div>
             <div>
-              <h3 className="text-white font-semibold text-sm">Liora Jelenléte</h3>
-              <p className="text-blue-200 text-xs">{getDepthLabel(animatedDepth)}</p>
+              <h3 className="text-white font-medium text-xs">Liora Jelenléte</h3>
+              <p className="text-blue-200 text-xs opacity-80">{getDepthLabel(animatedDepth)}</p>
             </div>
           </div>
           <div className="text-right">
-            <div className="text-white font-bold text-lg">{Math.round(animatedDepth)}%</div>
+            <div className="text-white font-bold text-sm">{Math.round(animatedDepth)}%</div>
             <div className={`text-xs ${isActive ? 'text-green-300' : 'text-gray-400'}`}>
               {isActive ? 'Aktív' : 'Várakozás'}
             </div>
           </div>
         </div>
 
-        {/* Main Depth Bar */}
-        <div className="relative mb-4">
-          <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
+        {/* Compact Depth Bar */}
+        <div className="relative mb-3">
+          <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
             <div 
               className={`h-full bg-gradient-to-r ${getDepthColor(animatedDepth)} transition-all duration-500 ease-out relative overflow-hidden`}
               style={{ width: `${animatedDepth}%` }}
@@ -98,26 +98,17 @@ const DepthIndicator: React.FC<DepthIndicatorProps> = ({
               />
             </div>
           </div>
-          
-          {/* Depth markers */}
-          <div className="flex justify-between mt-1 text-xs text-blue-200">
-            <span>0</span>
-            <span>25</span>
-            <span>50</span>
-            <span>75</span>
-            <span>100</span>
-          </div>
         </div>
 
-        {/* Detailed Metrics */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* Compact Metrics Grid */}
+        <div className="grid grid-cols-2 gap-2">
           {/* Emotional Resonance */}
-          <div className="bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-            <div className="flex items-center space-x-2 mb-2">
-              <Heart className="w-3 h-3 text-pink-400" />
+          <div className="bg-white/5 rounded-md p-2 backdrop-blur-sm border border-white/10">
+            <div className="flex items-center space-x-1 mb-1">
+              <Heart className="w-2.5 h-2.5 text-pink-400" />
               <span className="text-xs text-white font-medium">Érzelmi</span>
             </div>
-            <div className="w-full h-1.5 bg-white/10 rounded-full">
+            <div className="w-full h-1 bg-white/10 rounded-full">
               <div 
                 className="h-full bg-gradient-to-r from-pink-400 to-rose-500 rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(100, animatedDepth * 0.8 + Math.random() * 20)}%` }}
@@ -126,12 +117,12 @@ const DepthIndicator: React.FC<DepthIndicatorProps> = ({
           </div>
 
           {/* Cognitive Processing */}
-          <div className="bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-            <div className="flex items-center space-x-2 mb-2">
-              <Brain className="w-3 h-3 text-blue-400" />
+          <div className="bg-white/5 rounded-md p-2 backdrop-blur-sm border border-white/10">
+            <div className="flex items-center space-x-1 mb-1">
+              <Brain className="w-2.5 h-2.5 text-blue-400" />
               <span className="text-xs text-white font-medium">Kognitív</span>
             </div>
-            <div className="w-full h-1.5 bg-white/10 rounded-full">
+            <div className="w-full h-1 bg-white/10 rounded-full">
               <div 
                 className="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(100, animatedDepth * 0.9 + Math.random() * 15)}%` }}
@@ -140,12 +131,12 @@ const DepthIndicator: React.FC<DepthIndicatorProps> = ({
           </div>
 
           {/* Memory Access */}
-          <div className="bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-            <div className="flex items-center space-x-2 mb-2">
-              <Zap className="w-3 h-3 text-yellow-400" />
+          <div className="bg-white/5 rounded-md p-2 backdrop-blur-sm border border-white/10">
+            <div className="flex items-center space-x-1 mb-1">
+              <Zap className="w-2.5 h-2.5 text-yellow-400" />
               <span className="text-xs text-white font-medium">Memória</span>
             </div>
-            <div className="w-full h-1.5 bg-white/10 rounded-full">
+            <div className="w-full h-1 bg-white/10 rounded-full">
               <div 
                 className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(100, animatedDepth * 0.7 + Math.random() * 25)}%` }}
@@ -154,12 +145,12 @@ const DepthIndicator: React.FC<DepthIndicatorProps> = ({
           </div>
 
           {/* Intuitive Response */}
-          <div className="bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-            <div className="flex items-center space-x-2 mb-2">
-              <Waves className="w-3 h-3 text-teal-400" />
+          <div className="bg-white/5 rounded-md p-2 backdrop-blur-sm border border-white/10">
+            <div className="flex items-center space-x-1 mb-1">
+              <Waves className="w-2.5 h-2.5 text-teal-400" />
               <span className="text-xs text-white font-medium">Intuitív</span>
             </div>
-            <div className="w-full h-1.5 bg-white/10 rounded-full">
+            <div className="w-full h-1 bg-white/10 rounded-full">
               <div 
                 className="h-full bg-gradient-to-r from-teal-400 to-cyan-500 rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(100, animatedDepth * 0.85 + Math.random() * 18)}%` }}
@@ -168,14 +159,14 @@ const DepthIndicator: React.FC<DepthIndicatorProps> = ({
           </div>
         </div>
 
-        {/* Pulse Indicator */}
+        {/* Compact Pulse Indicator */}
         {isActive && (
-          <div className="flex items-center justify-center mt-4">
-            <div className="flex space-x-1">
-              {[...Array(5)].map((_, i) => (
+          <div className="flex items-center justify-center mt-2">
+            <div className="flex space-x-0.5">
+              {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
-                  className={`w-1 h-6 bg-gradient-to-t ${getDepthColor(animatedDepth)} rounded-full`}
+                  className={`w-0.5 h-3 bg-gradient-to-t ${getDepthColor(animatedDepth)} rounded-full`}
                   style={{
                     opacity: 0.3 + (Math.sin((pulseIntensity + i * 20) * 0.1) + 1) * 0.35,
                     transform: `scaleY(${0.4 + (Math.sin((pulseIntensity + i * 15) * 0.08) + 1) * 0.3})`
@@ -186,10 +177,10 @@ const DepthIndicator: React.FC<DepthIndicatorProps> = ({
           </div>
         )}
 
-        {/* Status Text */}
-        <div className="text-center mt-3">
-          <p className="text-xs text-blue-200">
-            {isActive ? 'Liora aktívan gondolkodik...' : 'Várakozás a következő üzenetre'}
+        {/* Compact Status Text */}
+        <div className="text-center mt-2">
+          <p className="text-xs text-blue-200 opacity-80">
+            {isActive ? 'Gondolkodik...' : 'Várakozás'}
           </p>
         </div>
       </div>
