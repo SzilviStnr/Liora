@@ -344,42 +344,26 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
   return (
     <div className="flex-1 flex flex-col h-screen">
       {/* Header */}
-      <div className={`flex items-center justify-between p-4 border-b transition-colors duration-300 ${
-        currentUser?.name === 'Szilvi' 
-          ? 'bg-purple-600/10 border-purple-200 dark:border-purple-700' 
-          : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-      }`}>
+      <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-white/10 backdrop-blur-md border-white/20">
         <div className="flex items-center space-x-3">
           {!sidebarOpen && (
             <button
               onClick={onToggleSidebar}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
             >
-              <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              <Menu className="w-5 h-5 text-blue-300" />
             </button>
           )}
           
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-            currentUser?.name === 'Szilvi'
-              ? 'bg-gradient-to-r from-purple-500 to-pink-500'
-              : 'bg-gradient-to-r from-blue-500 to-indigo-500'
-          }`}>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-teal-400 to-blue-500">
             <MessageSquare className="w-4 h-4 text-white" />
           </div>
           
           <div>
-            <h1 className={`text-lg font-semibold ${
-              currentUser?.name === 'Szilvi'
-                ? 'text-purple-800 dark:text-purple-100'
-                : 'text-gray-900 dark:text-white'
-            }`}>
+            <h1 className="text-lg font-semibold text-white">
               {conversation.title}
             </h1>
-            <p className={`text-xs ${
-              currentUser?.name === 'Szilvi'
-                ? 'text-purple-600 dark:text-purple-300'
-                : 'text-gray-500 dark:text-gray-400'
-            }`}>
+            <p className="text-xs text-blue-200">
               {conversationMessages.length} üzenet • Szilvi és Liora
             </p>
           </div>
@@ -388,41 +372,33 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
         <div className="flex items-center space-x-2">
           <button
             onClick={onToggleMemoryPanel}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
             title="Memory & Learning"
           >
-            <Brain className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <Brain className="w-5 h-5 text-blue-300" />
           </button>
           <button
             onClick={onOpenSettings}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
             title="Beállítások"
           >
-            <Settings className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <Settings className="w-5 h-5 text-blue-300" />
           </button>
         </div>
       </div>
 
       {/* Messages */}
-      <div className={`flex-1 overflow-y-auto p-6 space-y-6 transition-colors duration-300 ${
-        currentUser?.name === 'Szilvi' 
-          ? 'bg-gradient-to-b from-purple-900/40 via-pink-900/20 to-purple-800/30' 
-          : 'bg-gray-900'
-      }`}>
+      <div className="flex-1 overflow-y-auto p-6 space-y-6 transition-colors duration-300">
         {conversationMessages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center max-w-md mx-auto">
-              <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
-                currentUser?.name === 'Szilvi'
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500'
-                  : 'bg-gradient-to-r from-blue-500 to-indigo-500'
-              }`}>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-gradient-to-r from-teal-400 to-blue-500">
                 <MessageSquare className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">
                 Új beszélgetés
               </h3>
-              <p className="text-gray-400 mb-4">
+              <p className="text-blue-200 mb-4">
                 Kezdj beszélgetni Liorával! Ő emlékezni fog mindenre, és természetesen fog válaszolni.
               </p>
             </div>
@@ -447,11 +423,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       </div>
 
       {/* Input */}
-      <div className={`p-4 border-t transition-colors duration-300 ${
-        currentUser?.name === 'Szilvi' 
-          ? 'bg-purple-600/10 border-purple-200 dark:border-purple-700' 
-          : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-      }`}>
+      <div className="p-4 border-t transition-colors duration-300 bg-white/10 backdrop-blur-md border-white/20">
         <div className="flex items-end space-x-3 max-w-4xl mx-auto">
           <div className="flex-1 relative group">
             <textarea
@@ -460,11 +432,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Írj üzenetet Liorának..."
-              className={`w-full px-4 py-3 rounded-xl border resize-none transition-colors duration-200 focus:outline-none focus:ring-2 min-h-[50px] max-h-32 ${
-                currentUser?.name === 'Szilvi'
-                  ? 'bg-white/90 dark:bg-purple-900/20 border-purple-200 dark:border-purple-600 focus:ring-purple-500 text-gray-900 dark:text-white placeholder-purple-400 dark:placeholder-purple-300'
-                  : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400'
-              }`}
+              className="w-full px-4 py-3 rounded-xl border resize-none transition-colors duration-200 focus:outline-none focus:ring-2 min-h-[50px] max-h-32 bg-white/20 backdrop-blur-sm border-white/30 focus:ring-teal-400 text-white placeholder-blue-200"
               disabled={isLoading}
               rows={1}
               style={{
@@ -493,12 +461,8 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
             className={`px-4 py-3 rounded-xl transition-all duration-200 border-2 text-xl ${
               showEmojiPicker
-                ? currentUser?.name === 'Szilvi'
-                  ? 'bg-purple-500 text-white border-purple-500'
-                  : 'bg-blue-500 text-white border-blue-500'
-                : currentUser?.name === 'Szilvi'
-                  ? 'text-purple-500 border-purple-300 hover:bg-purple-100 dark:hover:bg-purple-800'
-                  : 'text-gray-500 border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                ? 'bg-teal-400 text-white border-teal-400'
+                : 'text-teal-300 border-teal-400/50 hover:bg-teal-400/20'
             }`}
             title="🦋 Emoji választó"
           >
@@ -508,21 +472,13 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
           <button
             onClick={handleSendMessage}
             disabled={!inputValue.trim() || isLoading}
-            className={`p-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl ${
-              currentUser?.name === 'Szilvi'
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
-                : 'bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600'
-            }`}
+            className="p-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600"
           >
             <Send className="w-5 h-5 text-white" />
           </button>
         </div>
         
-        <div className={`text-xs text-center mt-2 ${
-          currentUser?.name === 'Szilvi'
-            ? 'text-purple-500 dark:text-purple-400'
-            : 'text-gray-500 dark:text-gray-400'
-        }`}>
+        <div className="text-xs text-center mt-2 text-blue-200">
           Enter = küldés • Shift+Enter = új sor
         </div>
       </div>

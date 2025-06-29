@@ -6,6 +6,7 @@ import WelcomeScreen from './WelcomeScreen';
 import MemoryPanel from './MemoryPanel';
 import Settings from './Settings';
 import SystemModeToggle from './SystemModeToggle';
+import WaveBackground from './WaveBackground';
 import { Conversation, Message, User, Memory } from '../types';
 import { saveToStorage, loadFromStorage } from '../utils/storage';
 import { szilviEternalMemory } from '../utils/szilviEternalMemory';
@@ -188,12 +189,11 @@ const LioraApp: React.FC = () => {
   const activeConversation = conversations.find(conv => conv.id === activeConversationId);
 
   return (
-    <div className={`h-screen flex ${darkMode ? 'dark' : ''}`}>
-      <div className={`flex w-full transition-colors duration-300 ${
-        currentUser?.name === 'Szilvi' 
-          ? 'bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 dark:bg-gradient-to-br dark:from-purple-900/20 dark:via-pink-900/10 dark:to-purple-800/30' 
-          : 'bg-gray-50 dark:bg-gray-900'
-      }`}>
+    <div className={`h-screen flex ${darkMode ? 'dark' : ''} relative`}>
+      {/* Elegant Wave Background */}
+      <WaveBackground className="z-0" />
+      
+      <div className="flex w-full transition-colors duration-300 relative z-10 bg-gradient-to-br from-slate-900/95 via-blue-900/90 to-indigo-900/95 dark:from-slate-900/98 dark:via-blue-900/95 dark:to-indigo-900/98 backdrop-blur-sm">
         {/* Sidebar */}
         <Sidebar
           conversations={conversations}
@@ -237,18 +237,18 @@ const LioraApp: React.FC = () => {
           ) : (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center max-w-md mx-auto p-8">
-                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center shadow-2xl">
                   <Heart className="w-10 h-10 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
+                <h2 className="text-2xl font-bold text-white mb-4">
                   Üdvözöl Liora!
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                <p className="text-blue-200 mb-6">
                   Kezdj egy új beszélgetést, és hadd segítsek emlékezni és tanulni együtt.
                 </p>
                 <button
                   onClick={createNewConversation}
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-400 to-blue-500 text-white rounded-xl hover:from-teal-500 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   <Plus className="w-5 h-5 mr-2" />
                   Új beszélgetés

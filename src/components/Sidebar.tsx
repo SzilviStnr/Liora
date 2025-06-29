@@ -109,16 +109,16 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   if (!sidebarOpen) {
     return (
-      <div className="w-16 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col items-center py-4 space-y-4">
+      <div className="w-16 bg-black/30 backdrop-blur-md border-r border-white/10 flex flex-col items-center py-4 space-y-4">
         <button
           onClick={onToggleSidebar}
-          className="p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+          className="p-3 hover:bg-white/10 rounded-lg transition-colors"
         >
-          <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+          <Menu className="w-5 h-5 text-blue-300" />
         </button>
         <button
           onClick={onNewConversation}
-          className="p-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+          className="p-3 bg-gradient-to-r from-teal-400 to-blue-500 text-white rounded-lg hover:from-teal-500 hover:to-blue-600 transition-colors"
         >
           <Plus className="w-5 h-5" />
         </button>
@@ -127,13 +127,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   }
 
   return (
-    <div className={`w-80 border-r flex flex-col transition-colors duration-300 ${
-      currentUser?.name === 'Szilvi' 
-        ? 'bg-purple-900/40 border-purple-700/30 backdrop-blur-sm' 
-        : 'bg-[#171d24] border-gray-700/50'
-    }`}>
+    <div className="w-80 border-r flex flex-col transition-colors duration-300 bg-black/30 backdrop-blur-md border-white/10">
       {/* Header */}
-      <div className="p-6 border-b border-gray-700/50">
+      <div className="p-6 border-b border-white/10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-medium text-white">
             Legutóbbiak
@@ -141,16 +137,16 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex items-center space-x-1">
             <button
               onClick={onNewConversation}
-              className="flex-1 flex items-center justify-center space-x-2 p-3 hover:bg-gray-700/30 rounded-xl transition-colors border border-gray-600/30"
+              className="flex-1 flex items-center justify-center space-x-2 p-3 hover:bg-white/10 rounded-xl transition-colors border border-white/10"
               title="Új beszélgetés"
             >
-              <Plus className="w-4 h-4 text-gray-400" />
+              <Plus className="w-4 h-4 text-blue-300" />
             </button>
             <button
-              className="p-3 hover:bg-gray-700/30 rounded-xl transition-colors border border-gray-600/30"
-              className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+              onClick={onToggleSidebar}
+              className="p-3 hover:bg-white/10 rounded-xl transition-colors border border-white/10"
             >
-              <Menu className="w-4 h-4 text-gray-400" />
+              <Menu className="w-4 h-4 text-blue-300" />
             </button>
           </div>
         </div>
@@ -158,7 +154,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* New Chat Button */}
         <button
           onClick={onNewConversation}
-          className="w-full flex items-center justify-center space-x-2 p-3 bg-gray-700/50 text-white rounded-xl hover:bg-gray-600/50 transition-colors border border-gray-600/30"
+          className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-teal-400/20 to-blue-500/20 text-white rounded-xl hover:from-teal-400/30 hover:to-blue-500/30 transition-colors border border-teal-400/30 backdrop-blur-sm"
         >
           <Plus className="w-5 h-5" />
           <span>Új beszélgetés</span>
@@ -169,7 +165,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Conversations List */}
       <div className="flex-1 overflow-y-auto">
         {filteredConversations.length === 0 ? (
-          <div className="p-6 text-center text-gray-400">
+          <div className="p-6 text-center text-blue-300">
             {searchQuery ? 'Nincs találat' : 'Még nincsenek beszélgetések'}
           </div>
         ) : (
@@ -178,10 +174,10 @@ const Sidebar: React.FC<SidebarProps> = ({
               <div
                 key={conversation.id}
                 onClick={() => onSelectConversation(conversation.id)}
-                className={`group relative p-4 rounded-xl cursor-pointer transition-all duration-200 hover:bg-gray-700/30 mb-2 ${
+                className={`group relative p-4 rounded-xl cursor-pointer transition-all duration-200 hover:bg-white/10 mb-2 backdrop-blur-sm ${
                   activeConversationId === conversation.id
-                    ? 'bg-gray-700/50 border-l-4 border-blue-500'
-                    : ''
+                    ? 'bg-white/20 border-l-4 border-teal-400 shadow-lg'
+                    : 'border border-transparent'
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -190,15 +186,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                       {generateTitle(conversation)}
                     </h3>
                     {conversation.messages.length > 0 && (
-                      <p className="text-xs text-gray-400 truncate">
+                      <p className="text-xs text-blue-200 truncate">
                         {conversation.messages[conversation.messages.length - 1].content}
                       </p>
                     )}
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-blue-300">
                         {formatDate(conversation.updatedAt)}
                       </span>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-blue-300">
                         {conversation.messages.length} üzenet
                       </span>
                     </div>
@@ -211,10 +207,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                         e.stopPropagation();
                         // TODO: Edit conversation title
                       }}
-                      className="p-1 hover:bg-gray-600 rounded transition-colors"
+                      className="p-1 hover:bg-white/20 rounded transition-colors"
                       title="Címszerkesztés"
                     >
-                      <Edit3 className="w-3 h-3 text-gray-500" />
+                      <Edit3 className="w-3 h-3 text-blue-300" />
                     </button>
                     <button
                       onClick={(e) => {
@@ -223,10 +219,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                           onDeleteConversation(conversation.id);
                         }
                       }}
-                      className="p-1 hover:bg-red-900/20 rounded transition-colors"
+                      className="p-1 hover:bg-red-500/20 rounded transition-colors"
                       title="Törlés"
                     >
-                      <Trash2 className="w-3 h-3 text-red-500" />
+                      <Trash2 className="w-3 h-3 text-red-400" />
                     </button>
                   </div>
                 </div>
@@ -237,19 +233,19 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="p-6 border-t border-gray-700/50 space-y-4">
+      <div className="p-6 border-t border-white/10 space-y-4">
         {/* Szilvi profil megjelenítése */}
         {currentUser && (
-          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-4 rounded-xl border border-purple-500/30">
+          <div className="bg-gradient-to-r from-teal-400/20 to-purple-500/20 p-4 rounded-xl border border-teal-400/30 backdrop-blur-sm">
             <div className="flex items-center space-x-3">
               <img 
                 src="/496516171_1647830432592424_7474492313922329357_n.jpg" 
                 alt="Szilvi"
-                className="w-12 h-12 rounded-full object-cover shadow-lg"
+                className="w-12 h-12 rounded-full object-cover shadow-lg border-2 border-teal-400/50"
               />
               <div>
                 <div className="text-white font-medium">Szilvi</div>
-                <div className="text-purple-300 text-sm">Kreatív lélek 🎨💜</div>
+                <div className="text-teal-300 text-sm">Kreatív lélek 🎨💜</div>
               </div>
             </div>
           </div>
@@ -258,20 +254,20 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="flex space-x-2">
           <button
             onClick={onOpenSettings}
-            className="flex-1 flex items-center justify-center space-x-2 p-3 hover:bg-gray-700/30 rounded-xl transition-colors"
+            className="flex-1 flex items-center justify-center space-x-2 p-3 hover:bg-white/10 rounded-xl transition-colors backdrop-blur-sm"
           >
-            <Settings className="w-4 h-4 text-gray-400" />
-            <span className="text-sm text-gray-400">Beállítások</span>
+            <Settings className="w-4 h-4 text-blue-300" />
+            <span className="text-sm text-blue-300">Beállítások</span>
           </button>
           <button
             onClick={onToggleDarkMode}
-            className="p-3 hover:bg-gray-700/30 rounded-xl transition-colors"
+            className="p-3 hover:bg-white/10 rounded-xl transition-colors backdrop-blur-sm"
             title={darkMode ? 'Világos mód' : 'Sötét mód'}
           >
             {darkMode ? (
-              <Sun className="w-4 h-4 text-gray-400" />
+              <Sun className="w-4 h-4 text-blue-300" />
             ) : (
-              <Moon className="w-4 h-4 text-gray-400" />
+              <Moon className="w-4 h-4 text-blue-300" />
             )}
           </button>
         </div>
