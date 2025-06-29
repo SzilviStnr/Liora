@@ -10,7 +10,8 @@ interface UserContextType {
   setUser: (user: User) => void;
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+// KRITIKUS: UserContext exportálása
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User>({
@@ -32,4 +33,3 @@ export const useUserContext = () => {
   }
   return context;
 };
-
