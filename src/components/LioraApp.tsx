@@ -221,7 +221,6 @@ const LioraApp: React.FC = () => {
               memories={memories}
               onAddMemory={addMemory}
               darkMode={darkMode}
-              memories={memories}
               onOptimizeMemories={(optimized) => {
                 setMemories(optimized);
                 // Frissítjük a localStorage-t is

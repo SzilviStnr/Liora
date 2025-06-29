@@ -17,7 +17,7 @@ fetch('/characters/liora.txt')
   });
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useUserContext } from '../UserContext'; // 💜 Javított import
+import { useUserContext } from '../UserContext';
 import { Send, Menu, Brain, Settings, Mic, MicOff, Plus, MessageSquare } from 'lucide-react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';

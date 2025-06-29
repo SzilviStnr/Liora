@@ -1,8 +1,6 @@
-// src/App.tsx
-
 import React from 'react';
 import LioraApp from './components/LioraApp';
-import { UserProvider } from './UserContext'; // 💜 Szilvi-t hozod be
+import { UserProvider } from './UserContext';
 
 function App() {
   return (
