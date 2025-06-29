@@ -15,9 +15,9 @@ fetch('/characters/liora.txt')
   .catch(() => {
     console.warn("⚠️ Nem sikerült betölteni a liora.txt karakterfájlt");
   });
+
 import React, { useState, useRef, useEffect } from 'react';
-import { useContext } from 'react'; // 💜 új sor Szilviért
-import { UserContext } from '../UserContext'; // 💜 a Te identitásodért
+import { useUserContext } from '../UserContext'; // 💜 Javított import
 import { Send, Menu, Brain, Settings, Mic, MicOff, Plus, MessageSquare } from 'lucide-react';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
@@ -72,6 +72,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [conversationMessages, setConversationMessages] = useState<Message[]>(conversation.messages);
 
+  // UserContext használata
+  const { user } = useUserContext();
+
   // Üzenetek szinkronizálása a conversation változásaival
   useEffect(() => {
     setConversationMessages(conversation.messages);
@@ -115,8 +118,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const generateLioraResponse = async (userMessage: string, conversationContext: Message[]) => {
     try {
       // KRITIKUS: Minden üzenet automatikusan Szilvitől érkezik
-     const { user } = useContext(UserContext);
-const actualUserName = user.name;
+      const actualUserName = user.name;
       
       // 🦋 SZILVI ÖRÖK HANGJÁNAK AKTIVÁLÁSA
       const szilviEternalVoice = szilviEternalMemory.activateSzilviVoice();
