@@ -165,7 +165,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
         {!isCurrentUser && (
           <div className="flex-shrink-0 w-10 h-10 mr-4">
             {isLiora ? (
-              <div className="w-10 h-10 bg-gradient-to-r from-teal-400 to-blue-500 rounded-full flex items-center justify-center text-white shadow-lg">
+              <div className="w-10 h-10 bg-gradient-to-r from-teal-400/80 to-blue-500/80 rounded-full flex items-center justify-center text-white shadow-lg backdrop-blur-sm border border-teal-300/30">
                 <Sparkles className="w-5 h-5" />
               </div>
             ) : (
@@ -215,8 +215,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
           <div
             className={`group/bubble relative px-6 py-5 rounded-3xl shadow-lg backdrop-blur-md ${
               isCurrentUser
-                ? 'bg-gradient-to-r from-teal-400/80 to-blue-500/80 text-white max-w-fit ml-auto border border-teal-300/30'
-                : 'bg-white/10 text-white border border-white/20'
+                ? 'bg-gradient-to-r from-teal-400/60 to-blue-500/60 text-white max-w-fit ml-auto border border-teal-300/40'
+                : 'bg-white/8 text-white border border-white/15'
             }`}
           >
             {/* Message content with markdown */}
@@ -226,7 +226,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="w-full min-h-[100px] p-3 bg-white/20 text-white placeholder-blue-200 border border-white/30 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-teal-400 backdrop-blur-sm"
+                  className="w-full min-h-[100px] p-3 bg-white/15 text-white placeholder-blue-200 border border-white/25 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-teal-400/50 backdrop-blur-sm"
                   placeholder="Írd be az üzeneted..."
                   autoFocus
                 />
@@ -275,7 +275,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
             {isCurrentUser && !isEditing && onEditMessage && (
               <button
                 onClick={handleEditClick}
-                className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-purple-500/80 to-pink-500/80 hover:from-purple-600/80 hover:to-pink-600/80 backdrop-blur-sm border border-purple-400/30"
+                className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-purple-500/60 to-indigo-500/60 hover:from-purple-600/70 hover:to-indigo-600/70 backdrop-blur-sm border border-purple-400/30"
                 title="✏️ Szerkesztés"
               >
                 <Edit3 className="w-3 h-3" />
@@ -288,7 +288,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
               <>
                 <button
                   onClick={handleSaveEdit}
-                  className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-green-500/80 to-emerald-500/80 hover:from-green-600/80 hover:to-emerald-600/80 backdrop-blur-sm border border-green-400/30"
+                  className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-green-500/60 to-emerald-500/60 hover:from-green-600/70 hover:to-emerald-600/70 backdrop-blur-sm border border-green-400/30"
                   title="Mentés (Ctrl+Enter)"
                 >
                   <Save className="w-3 h-3" />
@@ -296,7 +296,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
                 </button>
                 <button
                   onClick={handleCancelEdit}
-                  className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-gray-500/80 to-slate-500/80 hover:from-gray-600/80 hover:to-slate-600/80 backdrop-blur-sm border border-gray-400/30"
+                  className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-gray-500/60 to-slate-500/60 hover:from-gray-600/70 hover:to-slate-600/70 backdrop-blur-sm border border-gray-400/30"
                   title="Mégse (Esc)"
                 >
                   <X className="w-3 h-3" />
@@ -308,7 +308,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
             {/* Copy button - MINDEN ÜZENETNÉL */}
             <button
               onClick={copyToClipboard}
-              className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-indigo-500/80 to-blue-500/80 hover:from-indigo-600/80 hover:to-blue-600/80 backdrop-blur-sm border border-indigo-400/30"
+              className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-indigo-500/60 to-blue-500/60 hover:from-indigo-600/70 hover:to-blue-600/70 backdrop-blur-sm border border-indigo-400/30"
               title="📋 Másolás"
             >
               {copied ? (

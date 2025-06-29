@@ -9,8 +9,8 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
     <div className={`fixed inset-0 overflow-hidden pointer-events-none ${className}`}>
       {/* Main wave container */}
       <div className="absolute inset-0">
-        {/* Wave 1 - Teal */}
-        <div className="absolute inset-0 opacity-30">
+        {/* Wave 1 - Soft Teal */}
+        <div className="absolute inset-0 opacity-20">
           <svg
             className="absolute inset-0 w-full h-full"
             viewBox="0 0 1200 800"
@@ -18,12 +18,12 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
           >
             <defs>
               <linearGradient id="tealGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(45, 212, 191, 0.4)" />
-                <stop offset="50%" stopColor="rgba(56, 178, 172, 0.6)" />
-                <stop offset="100%" stopColor="rgba(45, 212, 191, 0.3)" />
+                <stop offset="0%" stopColor="rgba(134, 239, 172, 0.25)" />
+                <stop offset="50%" stopColor="rgba(110, 231, 183, 0.35)" />
+                <stop offset="100%" stopColor="rgba(134, 239, 172, 0.2)" />
               </linearGradient>
               <filter id="glow1">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
                 <feMerge> 
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
@@ -38,16 +38,16 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
               <animateTransform
                 attributeName="transform"
                 type="translate"
-                values="0,0; 50,0; 0,0"
-                dur="8s"
+                values="0,0; 40,0; 0,0"
+                dur="10s"
                 repeatCount="indefinite"
               />
             </path>
           </svg>
         </div>
 
-        {/* Wave 2 - Lavender */}
-        <div className="absolute inset-0 opacity-25">
+        {/* Wave 2 - Soft Lavender */}
+        <div className="absolute inset-0 opacity-18">
           <svg
             className="absolute inset-0 w-full h-full"
             viewBox="0 0 1200 800"
@@ -55,12 +55,12 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
           >
             <defs>
               <linearGradient id="lavenderGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(167, 139, 250, 0.3)" />
-                <stop offset="50%" stopColor="rgba(196, 181, 253, 0.5)" />
-                <stop offset="100%" stopColor="rgba(167, 139, 250, 0.2)" />
+                <stop offset="0%" stopColor="rgba(196, 181, 253, 0.2)" />
+                <stop offset="50%" stopColor="rgba(221, 214, 254, 0.3)" />
+                <stop offset="100%" stopColor="rgba(196, 181, 253, 0.15)" />
               </linearGradient>
               <filter id="glow2">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
                 <feMerge> 
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
@@ -75,8 +75,8 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
               <animateTransform
                 attributeName="transform"
                 type="translate"
-                values="0,0; -30,0; 0,0"
-                dur="12s"
+                values="0,0; -25,0; 0,0"
+                dur="14s"
                 repeatCount="indefinite"
               />
             </path>
@@ -84,7 +84,7 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
         </div>
 
         {/* Wave 3 - Soft Gold */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-15">
           <svg
             className="absolute inset-0 w-full h-full"
             viewBox="0 0 1200 800"
@@ -92,12 +92,12 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
           >
             <defs>
               <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(251, 191, 36, 0.2)" />
-                <stop offset="50%" stopColor="rgba(245, 158, 11, 0.4)" />
-                <stop offset="100%" stopColor="rgba(251, 191, 36, 0.1)" />
+                <stop offset="0%" stopColor="rgba(254, 240, 138, 0.15)" />
+                <stop offset="50%" stopColor="rgba(253, 224, 71, 0.25)" />
+                <stop offset="100%" stopColor="rgba(254, 240, 138, 0.1)" />
               </linearGradient>
               <filter id="glow3">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
                 <feMerge> 
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
@@ -112,8 +112,8 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
               <animateTransform
                 attributeName="transform"
                 type="translate"
-                values="0,0; 40,0; 0,0"
-                dur="15s"
+                values="0,0; 30,0; 0,0"
+                dur="18s"
                 repeatCount="indefinite"
               />
             </path>
@@ -122,15 +122,15 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
 
         {/* Particle effects */}
         <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(15)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-white rounded-full opacity-30"
+              className="absolute w-0.5 h-0.5 bg-white rounded-full opacity-20"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                animation: `sparkle ${3 + Math.random() * 4}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 2}s`
+                animation: `sparkle ${4 + Math.random() * 4}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 3}s`
               }}
             />
           ))}
@@ -138,15 +138,20 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
 
         {/* Additional floating particles */}
         <div className="absolute inset-0">
-          {[...Array(15)].map((_, i) => (
+          {[...Array(12)].map((_, i) => (
             <div
               key={`particle-${i}`}
-              className="absolute w-0.5 h-0.5 bg-teal-300 rounded-full opacity-40"
+              className="absolute w-0.5 h-0.5 rounded-full opacity-25"
               style={{
+                background: [
+                  'rgba(134, 239, 172, 0.6)', // Soft green
+                  'rgba(196, 181, 253, 0.6)', // Soft lavender
+                  'rgba(254, 240, 138, 0.6)'  // Soft gold
+                ][Math.floor(Math.random() * 3)],
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                animation: `float ${5 + Math.random() * 3}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 3}s`
+                animation: `float ${6 + Math.random() * 4}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 4}s`
               }}
             />
           ))}
@@ -157,27 +162,27 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
       <style jsx>{`
         @keyframes sparkle {
           0%, 100% { 
-            opacity: 0.2; 
+            opacity: 0.15; 
             transform: scale(0.8); 
           }
           50% { 
-            opacity: 0.8; 
-            transform: scale(1.2); 
+            opacity: 0.4; 
+            transform: scale(1.1); 
           }
         }
 
         @keyframes float {
           0%, 100% { 
             transform: translateY(0px) translateX(0px); 
-            opacity: 0.3; 
+            opacity: 0.2; 
           }
           33% { 
-            transform: translateY(-10px) translateX(5px); 
-            opacity: 0.6; 
+            transform: translateY(-8px) translateX(4px); 
+            opacity: 0.35; 
           }
           66% { 
-            transform: translateY(5px) translateX(-3px); 
-            opacity: 0.4; 
+            transform: translateY(4px) translateX(-2px); 
+            opacity: 0.25; 
           }
         }
       `}</style>
