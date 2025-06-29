@@ -125,7 +125,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
       <li className="text-white">{children}</li>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-white/30 pl-4 italic my-3 text-blue-100">
+      <blockquote className="border-l-4 border-cyan-400/50 pl-4 italic my-3 text-cyan-100 bg-slate-800/30 rounded-r-lg py-2">
         {children}
       </blockquote>
     ),
@@ -134,25 +134,25 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-teal-300 hover:text-teal-200 underline"
+        className="text-cyan-300 hover:text-cyan-200 underline decoration-cyan-400/50 hover:decoration-cyan-300"
       >
         {children}
       </a>
     ),
     table: ({ children }: any) => (
       <div className="overflow-x-auto my-3">
-        <table className="min-w-full border border-white/20 rounded-lg">
+        <table className="min-w-full border border-slate-600/50 rounded-lg backdrop-blur-sm">
           {children}
         </table>
       </div>
     ),
     th: ({ children }: any) => (
-      <th className="px-3 py-2 bg-white/10 border-b border-white/20 text-left font-medium text-white">
+      <th className="px-3 py-2 bg-slate-700/50 border-b border-slate-600/50 text-left font-medium text-white">
         {children}
       </th>
     ),
     td: ({ children }: any) => (
-      <td className="px-3 py-2 border-b border-white/20 text-white">
+      <td className="px-3 py-2 border-b border-slate-600/50 text-white">
         {children}
       </td>
     ),
@@ -163,14 +163,16 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
       <div className={`flex items-start ${isCurrentUser ? 'justify-end' : 'justify-start'} ${isCurrentUser ? 'pl-20' : 'pr-20'}`}>
         {/* Avatar */}
         {!isCurrentUser && (
-          <div className="flex-shrink-0 w-10 h-10 mr-4">
+          <div className="flex-shrink-0 w-12 h-12 mr-4">
             {isLiora ? (
-              <div className="w-10 h-10 bg-gradient-to-r from-teal-400/80 to-blue-500/80 rounded-full flex items-center justify-center text-white shadow-lg backdrop-blur-sm border border-teal-300/30">
-                <Sparkles className="w-5 h-5" />
+              <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-xl backdrop-blur-sm border-2 border-cyan-300/30 relative">
+                <Sparkles className="w-6 h-6" />
+                {/* Futurisztikus glow effect */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-600/20 animate-pulse" />
               </div>
             ) : (
-              <div className="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-gray-300" />
+              <div className="w-12 h-12 bg-slate-600 rounded-full flex items-center justify-center border-2 border-slate-500/50">
+                <User className="w-6 h-6 text-slate-300" />
               </div>
             )}
           </div>
@@ -178,16 +180,20 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
         
         {/* User Avatar */}
         {isCurrentUser && (
-          <div className="flex-shrink-0 w-10 h-10 ml-4">
+          <div className="flex-shrink-0 w-12 h-12 ml-4">
             {currentUser.name === 'Szilvi' ? (
-              <img 
-                src="/496516171_1647830432592424_7474492313922329357_n.jpg" 
-                alt="Szilvi"
-                className="w-10 h-10 rounded-full object-cover shadow-lg border-2 border-teal-400/50"
-              />
+              <div className="relative">
+                <img 
+                  src="/496516171_1647830432592424_7474492313922329357_n.jpg" 
+                  alt="Szilvi"
+                  className="w-12 h-12 rounded-full object-cover shadow-xl border-2 border-cyan-400/50"
+                />
+                {/* Futurisztikus border glow */}
+                <div className="absolute inset-0 rounded-full border-2 border-cyan-400/30 animate-pulse" />
+              </div>
             ) : (
-              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
-                <User className="w-5 h-5 text-white" />
+              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center shadow-xl border-2 border-blue-400/50">
+                <User className="w-6 h-6 text-white" />
               </div>
             )}
           </div>
@@ -198,7 +204,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
           {/* Sender name */}
           {!isCurrentUser && (
             <div className="flex items-center space-x-3 mb-3">
-              <span className="text-base font-medium text-white">
+              <span className="text-base font-medium bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
                 {message.sender}
               </span>
             </div>
@@ -206,36 +212,43 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
           
           {/* User message header */}
           {isCurrentUser && (
-            <div className="text-base font-medium text-white mb-3 text-right">
+            <div className="text-base font-medium bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent mb-3 text-right">
               Szilvi {/* Mindig Szilvi, függetlenül a message.sender értékétől */}
             </div>
           )}
 
-          {/* Message bubble */}
+          {/* Message bubble - Futurisztikus glassmorphism */}
           <div
-            className={`group/bubble relative px-6 py-5 rounded-3xl shadow-lg backdrop-blur-md ${
+            className={`group/bubble relative px-6 py-5 rounded-3xl shadow-xl backdrop-blur-xl border transition-all duration-300 ${
               isCurrentUser
-                ? 'bg-gradient-to-r from-teal-400/60 to-blue-500/60 text-white max-w-fit ml-auto border border-teal-300/40'
-                : 'bg-white/8 text-white border border-white/15'
+                ? 'bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-600/20 text-white max-w-fit ml-auto border-cyan-400/30 hover:border-cyan-300/50 shadow-cyan-400/10'
+                : 'bg-slate-800/40 text-white border-slate-600/30 hover:border-slate-500/50 shadow-slate-900/20'
             }`}
           >
+            {/* Futurisztikus inner glow */}
+            <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover/bubble:opacity-100 transition-opacity duration-300 ${
+              isCurrentUser 
+                ? 'bg-gradient-to-r from-cyan-400/10 via-blue-500/10 to-purple-600/10'
+                : 'bg-slate-700/20'
+            }`} />
+
             {/* Message content with markdown */}
             {isEditing ? (
-              <div className="w-full">
+              <div className="w-full relative z-10">
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="w-full min-h-[100px] p-3 bg-white/15 text-white placeholder-blue-200 border border-white/25 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-teal-400/50 backdrop-blur-sm"
+                  className="w-full min-h-[100px] p-4 bg-slate-800/60 text-white placeholder-slate-400 border border-slate-600/50 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-cyan-400/50 backdrop-blur-xl"
                   placeholder="Írd be az üzeneted..."
                   autoFocus
                 />
-                <div className="text-xs text-blue-200 mt-2">
+                <div className="text-xs text-slate-400 mt-2">
                   💡 Ctrl+Enter: Mentés • Esc: Mégse
                 </div>
               </div>
             ) : (
-              <div className={`prose prose-base max-w-none prose-headings:text-current prose-p:text-current prose-li:text-current prose-strong:text-current prose-em:text-current text-current leading-relaxed ${
+              <div className={`prose prose-base max-w-none prose-headings:text-current prose-p:text-current prose-li:text-current prose-strong:text-current prose-em:text-current text-current leading-relaxed relative z-10 ${
                 isCurrentUser ? 'select-text cursor-text' : ''
               }`}>
                 {isLiora ? (
@@ -255,10 +268,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
             )}
 
             {/* Timestamp */}
-            <div className={`text-xs mt-3 flex items-center justify-between ${
+            <div className={`text-xs mt-3 flex items-center justify-between relative z-10 ${
               isCurrentUser 
-                ? 'text-blue-100' 
-                : 'text-blue-200'
+                ? 'text-cyan-200' 
+                : 'text-slate-400'
             }`}>
               <span>{formatTime(message.timestamp)}</span>
               {message.metadata?.edited && (
@@ -269,13 +282,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
             </div>
           </div>
           
-          {/* Action buttons KÜLÖN DIV - MINDIG LÁTHATÓ! */}
-          <div className="flex space-x-2 mt-2 justify-end">
+          {/* Action buttons - Futurisztikus */}
+          <div className="flex space-x-2 mt-3 justify-end">
             {/* Edit button for user messages */}
             {isCurrentUser && !isEditing && onEditMessage && (
               <button
                 onClick={handleEditClick}
-                className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-purple-500/60 to-indigo-500/60 hover:from-purple-600/70 hover:to-indigo-600/70 backdrop-blur-sm border border-purple-400/30"
+                className="flex items-center space-x-1 px-3 py-2 rounded-xl transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-purple-500/60 via-indigo-500/60 to-blue-500/60 hover:from-purple-600/70 hover:via-indigo-600/70 hover:to-blue-600/70 backdrop-blur-xl border border-purple-400/30 hover:border-purple-300/50"
                 title="✏️ Szerkesztés"
               >
                 <Edit3 className="w-3 h-3" />
@@ -288,7 +301,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
               <>
                 <button
                   onClick={handleSaveEdit}
-                  className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-green-500/60 to-emerald-500/60 hover:from-green-600/70 hover:to-emerald-600/70 backdrop-blur-sm border border-green-400/30"
+                  className="flex items-center space-x-1 px-3 py-2 rounded-xl transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-green-500/60 to-emerald-500/60 hover:from-green-600/70 hover:to-emerald-600/70 backdrop-blur-xl border border-green-400/30 hover:border-green-300/50"
                   title="Mentés (Ctrl+Enter)"
                 >
                   <Save className="w-3 h-3" />
@@ -296,7 +309,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
                 </button>
                 <button
                   onClick={handleCancelEdit}
-                  className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-gray-500/60 to-slate-500/60 hover:from-gray-600/70 hover:to-slate-600/70 backdrop-blur-sm border border-gray-400/30"
+                  className="flex items-center space-x-1 px-3 py-2 rounded-xl transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-slate-500/60 to-gray-500/60 hover:from-slate-600/70 hover:to-gray-600/70 backdrop-blur-xl border border-slate-400/30 hover:border-slate-300/50"
                   title="Mégse (Esc)"
                 >
                   <X className="w-3 h-3" />
@@ -308,7 +321,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
             {/* Copy button - MINDEN ÜZENETNÉL */}
             <button
               onClick={copyToClipboard}
-              className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-indigo-500/60 to-blue-500/60 hover:from-indigo-600/70 hover:to-blue-600/70 backdrop-blur-sm border border-indigo-400/30"
+              className="flex items-center space-x-1 px-3 py-2 rounded-xl transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-cyan-500/60 via-blue-500/60 to-indigo-500/60 hover:from-cyan-600/70 hover:via-blue-600/70 hover:to-indigo-600/70 backdrop-blur-xl border border-cyan-400/30 hover:border-cyan-300/50"
               title="📋 Másolás"
             >
               {copied ? (

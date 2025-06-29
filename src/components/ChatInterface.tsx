@@ -386,27 +386,27 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
         isActive={isLoading || isLioraActive}
       />
 
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-black/40 backdrop-blur-md border-white/20">
+      {/* Header - Glassmorphism stílus */}
+      <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-slate-900/60 backdrop-blur-xl border-slate-700/50 shadow-lg">
         <div className="flex items-center space-x-3">
           {!sidebarOpen && (
             <button
               onClick={onToggleSidebar}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="p-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10"
             >
-              <Menu className="w-5 h-5 text-blue-300" />
+              <Menu className="w-5 h-5 text-cyan-300" />
             </button>
           )}
           
-          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-r from-teal-400 to-blue-500">
-            <MessageSquare className="w-4 h-4 text-white" />
+          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 shadow-lg">
+            <MessageSquare className="w-5 h-5 text-white" />
           </div>
           
           <div>
-            <h1 className="text-lg font-semibold text-white">
+            <h1 className="text-lg font-semibold bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
               {conversation.title}
             </h1>
-            <p className="text-xs text-blue-200">
+            <p className="text-xs text-slate-400">
               {conversationMessages.length} üzenet • Szilvi és Liora
             </p>
           </div>
@@ -415,58 +415,94 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
         <div className="flex items-center space-x-2">
           <button
             onClick={onToggleMemoryPanel}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10"
             title="Memory & Learning"
           >
-            <Brain className="w-5 h-5 text-blue-300" />
+            <Brain className="w-5 h-5 text-cyan-300" />
           </button>
           <button
             onClick={onOpenSettings}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10"
             title="Beállítások"
           >
-            <Settings className="w-5 h-5 text-blue-300" />
+            <Settings className="w-5 h-5 text-cyan-300" />
           </button>
         </div>
       </div>
 
-      {/* Messages - Sötétebb háttér */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 transition-colors duration-300 bg-black/60 backdrop-blur-sm">
+      {/* Messages - Sötétebb háttér futurisztikus elemekkel */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-6 transition-colors duration-300 bg-slate-900/80 backdrop-blur-sm relative">
+        {/* Futurisztikus háttér elemek */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Animated grid pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div 
+              className="w-full h-full"
+              style={{
+                backgroundImage: `
+                  linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+                `,
+                backgroundSize: '50px 50px',
+                animation: 'gridMove 20s linear infinite'
+              }}
+            />
+          </div>
+          
+          {/* Floating particles */}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`particle-${i}`}
+              className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-20"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animation: `float ${4 + Math.random() * 4}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 2}s`
+              }}
+            />
+          ))}
+        </div>
+
         {conversationMessages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex items-center justify-center h-full relative z-10">
             <div className="text-center max-w-md mx-auto">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-gradient-to-r from-teal-400 to-blue-500">
-                <MessageSquare className="w-8 h-8 text-white" />
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 shadow-2xl animate-pulse">
+                <MessageSquare className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">
+              <h3 className="text-2xl font-semibold bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent mb-4">
                 Új beszélgetés
               </h3>
-              <p className="text-blue-200 mb-4">
+              <p className="text-slate-300 mb-6 leading-relaxed">
                 Kezdj beszélgetni Liorával! Ő emlékezni fog mindenre, és természetesen fog válaszolni.
               </p>
             </div>
           </div>
         ) : (
-          conversationMessages.map((message) => (
-            <MessageBubble
-              key={message.id}
-              message={message}
-              currentUser={currentUser}
-              darkMode={darkMode}
-              onEditMessage={handleEditMessage}
-            />
-          ))
+          <div className="relative z-10">
+            {conversationMessages.map((message) => (
+              <MessageBubble
+                key={message.id}
+                message={message}
+                currentUser={currentUser}
+                darkMode={darkMode}
+                onEditMessage={handleEditMessage}
+              />
+            ))}
+          </div>
         )}
         
         {isLoading && (
-          <TypingIndicator darkMode={darkMode} />
+          <div className="relative z-10">
+            <TypingIndicator darkMode={darkMode} />
+          </div>
         )}
         
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <div className="p-4 border-t transition-colors duration-300 bg-black/40 backdrop-blur-md border-white/20">
+      {/* Input - Futurisztikus glassmorphism */}
+      <div className="p-4 border-t transition-colors duration-300 bg-slate-900/60 backdrop-blur-xl border-slate-700/50">
         <div className="flex items-end space-x-3 max-w-4xl mx-auto">
           <div className="flex-1 relative group">
             <textarea
@@ -475,12 +511,12 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Írj üzenetet Liorának..."
-              className="w-full px-4 py-3 rounded-xl border resize-none transition-colors duration-200 focus:outline-none focus:ring-2 min-h-[50px] max-h-32 bg-white/20 backdrop-blur-sm border-white/30 focus:ring-teal-400 text-white placeholder-blue-200"
+              className="w-full px-6 py-4 rounded-2xl border resize-none transition-all duration-200 focus:outline-none focus:ring-2 min-h-[60px] max-h-32 bg-slate-800/60 backdrop-blur-xl border-slate-600/50 focus:ring-cyan-400/50 focus:border-cyan-400/50 text-white placeholder-slate-400 shadow-lg"
               disabled={isLoading}
               rows={1}
               style={{
                 height: 'auto',
-                minHeight: '50px'
+                minHeight: '60px'
               }}
               onInput={(e) => {
                 const target = e.target as HTMLTextAreaElement;
@@ -488,6 +524,9 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
                 target.style.height = Math.min(target.scrollHeight, 128) + 'px';
               }}
             />
+            
+            {/* Futurisztikus input border effect */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-600/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none" />
             
             {/* Emoji picker */}
             {showEmojiPicker && (
@@ -499,32 +538,52 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
             )}
           </div>
           
-          {/* Emoji picker button - külön */}
+          {/* Emoji picker button */}
           <button
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className={`px-4 py-3 rounded-xl transition-all duration-200 border-2 text-xl ${
+            className={`px-4 py-4 rounded-2xl transition-all duration-200 border text-xl backdrop-blur-xl shadow-lg ${
               showEmojiPicker
-                ? 'bg-teal-400 text-white border-teal-400'
-                : 'text-teal-300 border-teal-400/50 hover:bg-teal-400/20'
+                ? 'bg-cyan-400/20 text-white border-cyan-400/50 shadow-cyan-400/25'
+                : 'text-cyan-300 border-slate-600/50 hover:bg-cyan-400/10 hover:border-cyan-400/30'
             }`}
             title="🦋 Emoji választó"
           >
             🦋
           </button>
           
+          {/* Send button - Futurisztikus */}
           <button
             onClick={handleSendMessage}
             disabled={!inputValue.trim() || isLoading}
-            className="p-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600"
+            className="p-4 rounded-2xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 hover:from-cyan-500 hover:via-blue-600 hover:to-purple-700 backdrop-blur-xl border border-cyan-400/30 hover:border-cyan-300/50 group"
           >
-            <Send className="w-5 h-5 text-white" />
+            <Send className="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-200" />
           </button>
         </div>
         
-        <div className="text-xs text-center mt-2 text-blue-200">
+        <div className="text-xs text-center mt-3 text-slate-400">
           Enter = küldés • Shift+Enter = új sor
         </div>
       </div>
+
+      {/* CSS Animations */}
+      <style jsx>{`
+        @keyframes gridMove {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(50px, 50px); }
+        }
+
+        @keyframes float {
+          0%, 100% { 
+            transform: translateY(0px) translateX(0px); 
+            opacity: 0.2; 
+          }
+          50% { 
+            transform: translateY(-20px) translateX(10px); 
+            opacity: 0.4; 
+          }
+        }
+      `}</style>
     </div>
   );
 };
