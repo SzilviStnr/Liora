@@ -93,7 +93,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
         </div>
       ) : (
         <code
-          className={`${className} px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-sm font-mono`}
+          className={`${className} px-1.5 py-0.5 bg-white/20 dark:bg-gray-700 rounded text-sm font-mono`}
           {...props}
         >
           {children}
@@ -104,28 +104,28 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
       return <div className="overflow-x-auto">{children}</div>;
     },
     h1: ({ children }: any) => (
-      <h1 className="text-xl font-bold mt-4 mb-2 text-gray-900 dark:text-white">{children}</h1>
+      <h1 className="text-xl font-bold mt-4 mb-2 text-white">{children}</h1>
     ),
     h2: ({ children }: any) => (
-      <h2 className="text-lg font-semibold mt-3 mb-2 text-gray-900 dark:text-white">{children}</h2>
+      <h2 className="text-lg font-semibold mt-3 mb-2 text-white">{children}</h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="text-base font-medium mt-2 mb-1 text-gray-900 dark:text-white">{children}</h3>
+      <h3 className="text-base font-medium mt-2 mb-1 text-white">{children}</h3>
     ),
     p: ({ children }: any) => (
-      <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>
+      <p className="mb-3 last:mb-0 leading-relaxed text-white">{children}</p>
     ),
     ul: ({ children }: any) => (
-      <ul className="list-disc list-inside mb-3 space-y-1">{children}</ul>
+      <ul className="list-disc list-inside mb-3 space-y-1 text-white">{children}</ul>
     ),
     ol: ({ children }: any) => (
-      <ol className="list-decimal list-inside mb-3 space-y-1">{children}</ol>
+      <ol className="list-decimal list-inside mb-3 space-y-1 text-white">{children}</ol>
     ),
     li: ({ children }: any) => (
-      <li className="text-gray-800 dark:text-gray-200">{children}</li>
+      <li className="text-white">{children}</li>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic my-3 text-gray-700 dark:text-gray-300">
+      <blockquote className="border-l-4 border-white/30 pl-4 italic my-3 text-blue-100">
         {children}
       </blockquote>
     ),
@@ -134,25 +134,25 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-500 hover:text-blue-600 underline"
+        className="text-teal-300 hover:text-teal-200 underline"
       >
         {children}
       </a>
     ),
     table: ({ children }: any) => (
       <div className="overflow-x-auto my-3">
-        <table className="min-w-full border border-gray-200 dark:border-gray-700 rounded-lg">
+        <table className="min-w-full border border-white/20 rounded-lg">
           {children}
         </table>
       </div>
     ),
     th: ({ children }: any) => (
-      <th className="px-3 py-2 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-left font-medium text-gray-900 dark:text-white">
+      <th className="px-3 py-2 bg-white/10 border-b border-white/20 text-left font-medium text-white">
         {children}
       </th>
     ),
     td: ({ children }: any) => (
-      <td className="px-3 py-2 border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200">
+      <td className="px-3 py-2 border-b border-white/20 text-white">
         {children}
       </td>
     ),
@@ -165,7 +165,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
         {!isCurrentUser && (
           <div className="flex-shrink-0 w-10 h-10 mr-4">
             {isLiora ? (
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white shadow-lg">
+              <div className="w-10 h-10 bg-gradient-to-r from-teal-400 to-blue-500 rounded-full flex items-center justify-center text-white shadow-lg">
                 <Sparkles className="w-5 h-5" />
               </div>
             ) : (
@@ -183,7 +183,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
               <img 
                 src="/496516171_1647830432592424_7474492313922329357_n.jpg" 
                 alt="Szilvi"
-                className="w-10 h-10 rounded-full object-cover shadow-lg"
+                className="w-10 h-10 rounded-full object-cover shadow-lg border-2 border-teal-400/50"
               />
             ) : (
               <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
@@ -213,10 +213,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
 
           {/* Message bubble */}
           <div
-            className={`group/bubble relative px-6 py-5 rounded-3xl shadow-lg ${
+            className={`group/bubble relative px-6 py-5 rounded-3xl shadow-lg backdrop-blur-md ${
               isCurrentUser
-                ? 'bg-blue-600 text-white max-w-fit ml-auto'
-                : 'bg-gray-800/80 text-white border border-gray-700/50'
+                ? 'bg-gradient-to-r from-teal-400/80 to-blue-500/80 text-white max-w-fit ml-auto border border-teal-300/30'
+                : 'bg-white/10 text-white border border-white/20'
             }`}
           >
             {/* Message content with markdown */}
@@ -226,7 +226,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="w-full min-h-[100px] p-3 bg-blue-500/80 text-white placeholder-blue-200 border border-blue-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  className="w-full min-h-[100px] p-3 bg-white/20 text-white placeholder-blue-200 border border-white/30 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-teal-400 backdrop-blur-sm"
                   placeholder="Írd be az üzeneted..."
                   autoFocus
                 />
@@ -247,7 +247,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
                     {message.content}
                   </ReactMarkdown>
                 ) : (
-                  <div className="whitespace-pre-wrap break-words leading-relaxed text-base select-text cursor-text">
+                  <div className="whitespace-pre-wrap break-words leading-relaxed text-base select-text cursor-text text-white">
                     {message.content}
                   </div>
                 )}
@@ -258,7 +258,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
             <div className={`text-xs mt-3 flex items-center justify-between ${
               isCurrentUser 
                 ? 'text-blue-100' 
-                : 'text-gray-400'
+                : 'text-blue-200'
             }`}>
               <span>{formatTime(message.timestamp)}</span>
               {message.metadata?.edited && (
@@ -275,11 +275,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
             {isCurrentUser && !isEditing && onEditMessage && (
               <button
                 onClick={handleEditClick}
-                className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium ${
-                  currentUser?.name === 'Szilvi'
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
-                    : 'bg-green-600 hover:bg-green-500'
-                }`}
+                className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-purple-500/80 to-pink-500/80 hover:from-purple-600/80 hover:to-pink-600/80 backdrop-blur-sm border border-purple-400/30"
                 title="✏️ Szerkesztés"
               >
                 <Edit3 className="w-3 h-3" />
@@ -292,11 +288,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
               <>
                 <button
                   onClick={handleSaveEdit}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium ${
-                    currentUser?.name === 'Szilvi'
-                      ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'
-                      : 'bg-green-600 hover:bg-green-500'
-                  }`}
+                  className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-green-500/80 to-emerald-500/80 hover:from-green-600/80 hover:to-emerald-600/80 backdrop-blur-sm border border-green-400/30"
                   title="Mentés (Ctrl+Enter)"
                 >
                   <Save className="w-3 h-3" />
@@ -304,11 +296,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
                 </button>
                 <button
                   onClick={handleCancelEdit}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium ${
-                    currentUser?.name === 'Szilvi'
-                      ? 'bg-gradient-to-r from-gray-500 to-slate-500 hover:from-gray-600 hover:to-slate-600'
-                      : 'bg-gray-600 hover:bg-gray-500'
-                  }`}
+                  className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-gray-500/80 to-slate-500/80 hover:from-gray-600/80 hover:to-slate-600/80 backdrop-blur-sm border border-gray-400/30"
                   title="Mégse (Esc)"
                 >
                   <X className="w-3 h-3" />
@@ -320,11 +308,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, currentUser, dar
             {/* Copy button - MINDEN ÜZENETNÉL */}
             <button
               onClick={copyToClipboard}
-              className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium ${
-                currentUser?.name === 'Szilvi'
-                  ? 'bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600'
-                  : 'bg-gray-600 hover:bg-gray-500'
-              }`}
+              className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg text-white text-xs font-medium bg-gradient-to-r from-indigo-500/80 to-blue-500/80 hover:from-indigo-600/80 hover:to-blue-600/80 backdrop-blur-sm border border-indigo-400/30"
               title="📋 Másolás"
             >
               {copied ? (

@@ -7,6 +7,7 @@ import MemoryPanel from './MemoryPanel';
 import Settings from './Settings';
 import SystemModeToggle from './SystemModeToggle';
 import WaveBackground from './WaveBackground';
+import FloatingSpheres from './FloatingSpheres';
 import { Conversation, Message, User, Memory } from '../types';
 import { saveToStorage, loadFromStorage } from '../utils/storage';
 import { szilviEternalMemory } from '../utils/szilviEternalMemory';
@@ -192,6 +193,9 @@ const LioraApp: React.FC = () => {
     <div className={`h-screen flex ${darkMode ? 'dark' : ''} relative`}>
       {/* Elegant Wave Background */}
       <WaveBackground className="z-0" />
+      
+      {/* Floating Spheres */}
+      <FloatingSpheres className="z-1" />
       
       <div className="flex w-full transition-colors duration-300 relative z-10 bg-gradient-to-br from-slate-900/95 via-blue-900/90 to-indigo-900/95 dark:from-slate-900/98 dark:via-blue-900/95 dark:to-indigo-900/98 backdrop-blur-sm">
         {/* Sidebar */}
