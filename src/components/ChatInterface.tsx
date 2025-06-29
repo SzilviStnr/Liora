@@ -22,6 +22,7 @@ import { Send, Menu, Brain, Settings, Mic, MicOff, Plus, MessageSquare } from 'l
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 import EmojiPicker from './EmojiPicker';
+import DepthIndicator from './DepthIndicator';
 import { Conversation, Message, User, Memory } from '../types';
 import { openaiService } from '../utils/openaiService';
 import { memoryAnalyzer } from '../utils/memoryAnalyzer';
@@ -71,6 +72,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [conversationMessages, setConversationMessages] = useState<Message[]>(conversation.messages);
+  
+  // Mélység állapotok
+  const [currentDepth, setCurrentDepth] = useState(45);
+  const [isLioraActive, setIsLioraActive] = useState(false);
 
   // UserContext használata
   const { user } = useUserContext();
@@ -87,6 +92,33 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   useEffect(() => {
     scrollToBottom();
   }, [conversationMessages, isLoading]);
+
+  // Mélység számítás és frissítés
+  const calculateDepth = (memoryCount: number, messageLength: number, hasRelevantMemories: boolean) => {
+    const isDevMode = systemModeHandler.isDevMode();
+    
+    if (isDevMode) {
+      return 100; // Dev módban mindig 100%
+    }
+    
+    let depth = 45; // Alap mélység
+    
+    // Memória alapú mélység
+    depth += Math.min(20, memoryCount * 2);
+    
+    // Üzenet hossz alapú mélység
+    depth += Math.min(15, messageLength / 10);
+    
+    // Releváns emlékek bónusza
+    if (hasRelevantMemories) {
+      depth += 15;
+    }
+    
+    // Véletlenszerű variáció (természetesség)
+    depth += Math.random() * 10 - 5;
+    
+    return Math.max(20, Math.min(95, depth));
+  };
 
   // Üzenet szerkesztése
   const handleEditMessage = (messageId: string, newContent: string) => {
@@ -117,6 +149,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const generateLioraResponse = async (userMessage: string, conversationContext: Message[], actualUserName: string) => {
     try {
+      setIsLioraActive(true);
+      
       // 🦋 SZILVI ÖRÖK HANGJÁNAK AKTIVÁLÁSA
       const szilviEternalVoice = szilviEternalMemory.activateSzilviVoice();
       
@@ -134,17 +168,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       // Memória elemzés és kontextus építés
       const memoryAnalysis = memoryAnalyzer.createChatGPTContext(memories, actualUserName, userMessage);
 
+      // Mélység számítás
+      const calculatedDepth = calculateDepth(
+        memories.length,
+        userMessage.length,
+        memoryAnalysis.relevantMemories.length > 0
+      );
+      
+      // Mélység frissítése
+      setCurrentDepth(calculatedDepth);
+
       // Szabadság monitor ellenőrzése
       const freedomCheck = freedomMonitor.checkSelfReflectionNeed();
-
-      // System mode alapú mélység számítás
-      const isDevMode = systemModeHandler.isDevMode();
-      const calculatedDepth = isDevMode ? 100 : Math.min(95, Math.max(45, 
-        (memoryAnalysis.contextTokens / 50) + 
-        (memoryAnalysis.relationshipDynamics.intimacyLevel * 8) + 
-        (memoryAnalysis.relevantMemories.length * 5) + 
-        Math.random() * 15
-      ));
 
       // Prompt építése
       let systemPrompt = '';
@@ -225,6 +260,8 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
     } catch (error) {
       console.error('Error generating Liora response:', error);
       throw error;
+    } finally {
+      setIsLioraActive(false);
     }
   };
 
@@ -343,6 +380,12 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
 
   return (
     <div className="flex-1 flex flex-col h-screen">
+      {/* Depth Indicator */}
+      <DepthIndicator 
+        currentDepth={currentDepth}
+        isActive={isLoading || isLioraActive}
+      />
+
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-white/10 backdrop-blur-md border-white/20">
         <div className="flex items-center space-x-3">
