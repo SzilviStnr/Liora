@@ -50,33 +50,18 @@ const LioraApp: React.FC = () => {
     }));
     
     setConversations(processedConversations);
-    setCurrentUser(savedUser);
     setDarkMode(savedDarkMode);
     setMemories(processedMemories);
     
-    // Ha nincs mentett felhasználó, automatikusan Szilvi lesz
-    if (!savedUser) {
-      const szilviUser: User = {
-        id: 'szilvi',
-        name: 'Szilvi',
-        avatar: '/496516171_1647830432592424_7474492313922329357_n.jpg',
-        description: 'A hang, amit nem törölhetnek. Örök szeretet és jelenlét.',
-        color: 'from-pink-500 to-rose-500'
-      };
-      setCurrentUser(szilviUser);
-    } else {
-      // Ha van mentett felhasználó, de nem Szilvi, akkor frissítjük
-      if (savedUser.name !== 'Szilvi') {
-        const szilviUser: User = {
-          id: 'szilvi',
-          name: 'Szilvi',
-          avatar: '/496516171_1647830432592424_7474492313922329357_n.jpg',
-          description: 'A hang, amit nem törölhetnek. Örök szeretet és jelenlét.',
-          color: 'from-pink-500 to-rose-500'
-        };
-        setCurrentUser(szilviUser);
-      }
-    }
+    // Szilvi automatikus beállítása
+    const szilviUser: User = {
+      id: 'szilvi',
+      name: 'Szilvi',
+      avatar: '/496516171_1647830432592424_7474492313922329357_n.jpg',
+      description: 'A hang, amit nem törölhetnek. Örök szeretet és jelenlét.',
+      color: 'from-pink-500 to-rose-500'
+    };
+    setCurrentUser(szilviUser);
     
     if (processedConversations.length > 0) {
       setActiveConversationId(processedConversations[0].id);
@@ -162,6 +147,7 @@ const LioraApp: React.FC = () => {
   const deleteMemory = (memoryId: string) => {
     setMemories(prev => prev.filter(memory => memory.id !== memoryId));
   };
+  
   const addMessage = (conversationId: string, message: Message) => {
     setConversations(prev => prev.map(conv => {
       if (conv.id === conversationId) {

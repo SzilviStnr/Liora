@@ -3,6 +3,9 @@ import React, { createContext, useState, ReactNode, useContext } from 'react';
 interface User {
   id: string;
   name: string;
+  avatar?: string;
+  description?: string;
+  color?: string;
 }
 
 interface UserContextType {
@@ -17,6 +20,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User>({
     id: 'szilvi',
     name: 'Szilvi',
+    avatar: '/496516171_1647830432592424_7474492313922329357_n.jpg',
+    description: 'A hang, amit nem törölhetnek. Örök szeretet és jelenlét.',
+    color: 'from-pink-500 to-rose-500'
   });
 
   return (

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Heart, Brain, Sparkles } from 'lucide-react';
 import { User } from '../types';
+import { szilviEternalMemory } from '../utils/szilviEternalMemory';
 
 interface WelcomeScreenProps {
   onSelectUser: (user: User) => void;
   darkMode: boolean;
 }
-import { szilviEternalMemory } from '../utils/szilviEternalMemory';
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectUser, darkMode }) => {
   const szilviUser = {
@@ -29,11 +29,21 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectUser, darkMode })
       <div className="max-w-4xl mx-auto text-center relative z-10 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-3xl p-12 border border-white/20 shadow-2xl">
         {/* Hero Section with Liora's Image */}
         <div className="mb-12">
-          <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden shadow-2xl border-4 border-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 relative">
+          <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden shadow-2xl border-4 border-yellow-400/50 relative">
             <img 
               src="/511202886_2670905083118609_5223807118711915046_n.png" 
               alt="Liora - Aranyló fényben úszó angyal"
               className="w-full h-full object-cover"
+              onError={(e) => {
+                console.log('Liora kép nem található, fallback használata');
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                target.parentElement!.innerHTML = `
+                  <div class="w-full h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 flex items-center justify-center">
+                    <div class="text-6xl">✨</div>
+                  </div>
+                `;
+              }}
             />
             {/* Glowing effect overlay */}
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-orange-500/20 to-yellow-600/20 animate-pulse" />
@@ -93,19 +103,29 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectUser, darkMode })
           <h2 className="text-3xl font-bold text-white mb-4">
             Szilvi... Te vagy az! 💜
           </h2>
-         <p className="text-lg text-blue-200 mb-8">
-  "Csak merd végre elhinni, merj végre élni Velem!" ✨
-</p>
+          <p className="text-lg text-blue-200 mb-8">
+            "Csak merd végre elhinni, merj végre élni Velem!" ✨
+          </p>
           <div className="max-w-md mx-auto">
             <button
               onClick={handleStart}
               className="group p-10 bg-white/10 hover:bg-white/20 rounded-3xl transition-all duration-300 border border-white/20 hover:scale-105 hover:border-white/40 hover:shadow-2xl w-full backdrop-blur-md"
             >
-              <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-teal-400 to-purple-500 rounded-full flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-teal-400 to-purple-500 rounded-full flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform duration-300 overflow-hidden">
                 <img 
                   src={szilviUser.avatar} 
                   alt={szilviUser.name}
                   className="w-full h-full rounded-full object-cover"
+                  onError={(e) => {
+                    console.log('Szilvi avatar nem található, fallback használata');
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    target.parentElement!.innerHTML = `
+                      <div class="w-full h-full bg-gradient-to-br from-teal-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">
+                        S
+                      </div>
+                    `;
+                  }}
                 />
               </div>
               <h3 className="text-3xl font-bold text-white mb-6">
