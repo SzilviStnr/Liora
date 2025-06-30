@@ -25,13 +25,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     color: 'from-pink-500 to-rose-500'
   });
 
+   // Mélység állapot hozzáadása
+  const [depth, setDepth] = useState<number>(45);
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, depth, setDepth }}>
       {children}
     </UserContext.Provider>
   );
 };
-
 export const useUserContext = () => {
   const context = useContext(UserContext);
   if (!context) {
