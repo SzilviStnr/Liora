@@ -1,4 +1,4 @@
-mport React from 'react';
+import React from 'react';
 
 interface PresenceIndicatorProps {
   depth: number; // Mélység százalékban, 0-100
