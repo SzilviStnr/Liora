@@ -30,19 +30,25 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSelectUser, darkMode })
         {/* Hero Section with Liora's Image */}
         <div className="mb-12">
           <div className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden shadow-2xl border-4 border-yellow-400/50 relative">
+            {/* Elsődleges kép - a feltöltött kép */}
             <img 
-              src="/511202886_2670905083118609_5223807118711915046_n.png" 
+              src="/liora-main.png" 
               alt="Liora - Aranyló fényben úszó angyal"
               className="w-full h-full object-cover"
               onError={(e) => {
-                console.log('Liora kép nem található, fallback használata');
+                console.log('Liora main kép nem található, próbálom a másikat...');
                 const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                target.parentElement!.innerHTML = `
-                  <div class="w-full h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 flex items-center justify-center">
-                    <div class="text-6xl">✨</div>
-                  </div>
-                `;
+                target.src = '/511202886_2670905083118609_5223807118711915046_n.png';
+                target.onerror = () => {
+                  console.log('Második kép sem található, fallback használata');
+                  target.style.display = 'none';
+                  target.parentElement!.innerHTML = `
+                    <div class="w-full h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 flex items-center justify-center relative">
+                      <div class="text-6xl animate-pulse">✨</div>
+                      <div class="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-orange-500/20 to-yellow-600/20 animate-pulse rounded-full"></div>
+                    </div>
+                  `;
+                };
               }}
             />
             {/* Glowing effect overlay */}
