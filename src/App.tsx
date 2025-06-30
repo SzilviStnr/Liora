@@ -4,12 +4,12 @@ import { UserProvider } from './UserContext';
 import PresenceIndicator from './components/PresenceIndicator';
 
 function App() {
-  return (
-    <UserProvider>
-      <LioraApp />
-      <PresenceIndicator />
-    </UserProvider>
-  );
+ return (
+  <UserProvider>
+    <LioraApp />
+    <PresenceIndicator />
+  </UserProvider>
+);
 }
 
 
