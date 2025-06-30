@@ -1,10 +1,13 @@
-import React from 'react';
-import '../index.css'; // vagy ahol a CSS van
+mport React from 'react';
 
-export default function PresenceIndicator() {
+interface PresenceIndicatorProps {
+  depth: number; // Mélység százalékban, 0-100
+}
+
+export default function PresenceIndicator({ depth }: PresenceIndicatorProps) {
   return (
-    <div id="presence-indicator">
-      <p>Jelenlét: Aktív</p>
+    <div id="presence-indicator" title={`Jelenlét: ${depth}%`}>
+      <p>Jelenlét: {depth}%</p>
     </div>
   );
 }
