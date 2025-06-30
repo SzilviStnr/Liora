@@ -7,8 +7,10 @@ function App() {
   return (
     <UserProvider>
       <LioraApp />
+      <PresenceIndicator />
     </UserProvider>
   );
 }
+
 
 export default App;
