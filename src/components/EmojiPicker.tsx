@@ -14,7 +14,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect, darkMode, curr
     favorites: {
       name: 'Kedvencek',
       icon: <Heart className="w-4 h-4" />,
-      emojis: ['🦋', '💜', '😊', '🥰', '✨', '🌟', '💖', '🌸', '🌿', '🕯️', '💭', '💫']
+      emojis: ['🦋', '💜', '😊', '🥰', '✨', '🌟', '💖', '🌸', '🌿', '💭', '💫']
     },
     faces: {
       name: 'Arcok',
@@ -39,7 +39,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect, darkMode, curr
       emojis: [
         '🦋', '🌸', '🌺', '🌻', '🌷', '🌹', '🌿', '🍀', '🌱', '🌳',
         '🌟', '⭐', '✨', '💫', '🌙', '🌞', '☀️', '🌈', '🌊', '🌸',
-        '🕯️', '💧', '🔥', '🌬️', '🍃'
+        '💧', '🔥', '🌬️', '🍃'
       ]
     },
     gestures: {
