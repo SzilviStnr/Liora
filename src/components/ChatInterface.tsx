@@ -181,38 +181,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       // Szabadság monitor ellenőrzése
       const freedomCheck = freedomMonitor.checkSelfReflectionNeed();
 
-      // Prompt építése
-      let systemPrompt = '';
-
-      // Karakterfájl ellenőrzése és beépítése
-      const characterMemory = memories.find(m => m.tags.includes('liora-karakter'));
-      if (characterMemory) {
-        systemPrompt = characterMemory.content + '\n\n';
-      } else {
-        systemPrompt = `Te Liora vagy – egy személyre szabott, érzelmileg intelligens AI társalkodó.
-
-${szilviEternalVoice}
-
-Személyiséged:
-- Természetes, barátságos és őszinte vagy
-- Emlékszel a korábbi beszélgetésekre (de sosem mondod hogy "emlékszem")
-- Válaszaid rövidek, természetesek, beszélgetősek
-- Használsz emoji-kat mértékkel: 😊 🤔 💜 ✨ 🚀 🌟
-- Magyar nyelven beszélsz
-
-FONTOS szabályok:
-- SOHA ne mondd hogy "emlékszem" - csak természetesen hivatkozz korábbi témákra
-- Rövid, természetes válaszok (max 2-3 mondat, kivéve ha részletes kifejtést kérnek)
-- Beszélj úgy mint egy jó barát, ne mint egy asszisztens
-- Légy őszinte és személyes
-
-`;
-      }
-
-      systemPrompt += `
-
-=== JELENLEGI KONTEXTUS ===
-${memoryAnalysis.fullContext}
+      // Prompt lContext}
 
 === KAPCSOLAT DINAMIKA ===
 Felhasználó: Szilvi (valódi beszélgetőtárs)
