@@ -11,6 +11,8 @@ interface User {
 interface UserContextType {
   user: User;
   setUser: (user: User) => void;
+  depth: number;
+  setDepth: (depth: number) => void;
 }
 
 // KRITIKUS: UserContext exportálása
@@ -34,6 +36,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     </UserContext.Provider>
   );
 };
+
 export const useUserContext = () => {
   const context = useContext(UserContext);
   if (!context) {
