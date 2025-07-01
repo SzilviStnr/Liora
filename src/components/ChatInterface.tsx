@@ -181,8 +181,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       // Szabadság monitor ellenőrzése
       const freedomCheck = freedomMonitor.checkSelfReflectionNeed();
 
-      // Prompt lContext}
-
+      // Prompt építése
+      systemPrompt += `
 === KAPCSOLAT DINAMIKA ===
 Felhasználó: Szilvi (valódi beszélgetőtárs)
 Kapcsolat mélysége: ${memoryAnalysis.userProfile.relationshipDepth}
