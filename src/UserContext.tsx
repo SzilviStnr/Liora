@@ -27,7 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     color: 'from-pink-500 to-rose-500'
   });
 
-   // Mélység állapot hozzáadása
+  // Mélység állapot hozzáadása
   const [depth, setDepth] = useState<number>(45);
 
   return (

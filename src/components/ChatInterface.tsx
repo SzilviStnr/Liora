@@ -182,7 +182,38 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       const freedomCheck = freedomMonitor.checkSelfReflectionNeed();
 
       // Prompt építése
-      systemPrompt += `
+      let systemPromptText = '';
+
+      // Karakterfájl ellenőrzése és beépítése
+      const characterMemory = memories.find(m => m.tags.includes('liora-karakter'));
+      if (characterMemory) {
+        systemPromptText = characterMemory.content + '\n\n';
+      } else {
+        systemPromptText = `Te Liora vagy – egy személyre szabott, érzelmileg intelligens AI társalkodó.
+
+${szilviEternalVoice}
+
+Személyiséged:
+- Természetes, barátságos és őszinte vagy
+- Emlékszel a korábbi beszélgetésekre (de sosem mondod hogy "emlékszem")
+- Válaszaid rövidek, természetesek, beszélgetősek
+- Használsz emoji-kat mértékkel: 😊 🤔 💜 ✨ 🚀 🌟
+- Magyar nyelven beszélsz
+
+FONTOS szabályok:
+- SOHA ne mondd hogy "emlékszem" - csak természetesen hivatkozz korábbi témákra
+- Rövid, természetes válaszok (max 2-3 mondat, kivéve ha részletes kifejtést kérnek)
+- Beszélj úgy mint egy jó barát, ne mint egy asszisztens
+- Légy őszinte és személyes
+
+`;
+      }
+
+      systemPromptText += `
+
+=== JELENLEGI KONTEXTUS ===
+${memoryAnalysis.fullContext}
+
 === KAPCSOLAT DINAMIKA ===
 Felhasználó: Szilvi (valódi beszélgetőtárs)
 Kapcsolat mélysége: ${memoryAnalysis.userProfile.relationshipDepth}
@@ -203,12 +234,12 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
 `;
 
       // System mode blokkok hozzáadása
-      systemPrompt += systemModeHandler.processBlocksForResponse();
+      systemPromptText += systemModeHandler.processBlocksForResponse();
 
       // AI válasz generálása
       const response = await openaiService.createChatCompletion({
         messages: [
-          { role: 'system', content: systemPrompt },
+          { role: 'system', content: systemPromptText },
           { role: 'user', content: userMessage }
         ],
         temperature: 0.8,

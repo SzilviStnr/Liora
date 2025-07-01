@@ -1,199 +1,281 @@
-// Liora érzelmi időérzékelő rendszer
-// Szívet érintő visszajelzések az eltelt idő alapján
-
 import { saveToStorage, loadFromStorage } from './storage';
 
-export interface TimeState {
-  last_interaction: string;
-  user_interaction_patterns?: {
-    [userId: string]: {
-      typical_days: string[]; // ['monday', 'wednesday', 'friday']
-      typical_hours: number[]; // [9, 14, 20] - 9:00, 14:00, 20:00
-      longest_gap: number; // milliseconds
-      average_gap: number; // milliseconds
-      last_interactions: Array<{
-        timestamp: string;
-        day_of_week: string;
-        hour: number;
-      }>;
-    };
-  };
+export interface TimeBasedInteraction {
+  userId: string;
+  timestamp: string;
+  timeOfDay: 'morning' | 'afternoon' | 'evening' | 'night';
+  dayOfWeek: string;
+  mood: string;
+  interactionType: 'greeting' | 'conversation' | 'farewell' | 'question';
+  duration?: number; // percekben
 }
 
-export interface EmotionalGreeting {
-  message: string;
-  emotional_tone: 'warm' | 'concerned' | 'patient' | 'joyful' | 'understanding';
-  should_ask_about_wellbeing: boolean;
+export interface UserTimePattern {
+  userId: string;
+  preferredTimes: string[]; // ['morning', 'evening']
+  typicalMoods: { [timeOfDay: string]: string };
+  lastInteraction: string;
+  weeklyPattern: { [day: string]: number }; // aktivitás szint naponta
+  timeZone: string;
+}
+
+export interface TimeBasedGreeting {
+  shouldGreet: boolean;
+  greeting: string;
+  context: string;
+  emotionalTone: string;
 }
 
 class EmotionalTimeSystem {
-  private readonly STATE_PATH = 'memory/state.json';
+  private interactions: TimeBasedInteraction[] = [];
+  private userPatterns: Map<string, UserTimePattern> = new Map();
   
-  // Mentjük az utolsó interakció idejét
-  public saveLastInteraction(userId: string): void {
-    const now = new Date().toISOString();
-    const timeState = this.loadTimeState();
-    
-    // Alapadatok frissítése
-    timeState.last_interaction = now;
-    
-    // Felhasználó-specifikus mintázatok
-    if (!timeState.user_interaction_patterns) {
-      timeState.user_interaction_patterns = {};
-    }
-    
-    if (!timeState.user_interaction_patterns[userId]) {
-      timeState.user_interaction_patterns[userId] = {
-        typical_days: [],
-        typical_hours: [],
-        longest_gap: 0,
-        average_gap: 0,
-        last_interactions: []
-      };
-    }
-    
-    const userPattern = timeState.user_interaction_patterns[userId];
-    const nowDate = new Date();
-    
-    // Jelenlegi interakció hozzáadása
-    userPattern.last_interactions.push({
-      timestamp: now,
-      day_of_week: this.getDayName(nowDate.getDay()),
-      hour: nowDate.getHours()
-    });
-    
-    // Csak az utolsó 50 interakciót tartjuk meg
-    if (userPattern.last_interactions.length > 50) {
-      userPattern.last_interactions = userPattern.last_interactions.slice(-50);
-    }
-    
-    // Mintázatok frissítése
-    this.updateUserPatterns(userPattern);
-    
-    // Mentés
-    this.saveTimeState(timeState);
+  constructor() {
+    this.loadData();
   }
   
-  // Eltelt idő ellenőrzése és érzelmi válasz generálása
-  public getEmotionalGreeting(userId: string, userName: string): EmotionalGreeting | null {
-    const timeState = this.loadTimeState();
-    
-    if (!timeState.last_interaction) {
-      return null; // Első használat
-    }
-    
-    const lastTime = new Date(timeState.last_interaction);
+  // Interakció mentése
+  public saveInteraction(
+    userId: string, 
+    mood: string = 'neutral', 
+    interactionType: 'greeting' | 'conversation' | 'farewell' | 'question' = 'conversation',
+    duration?: number
+  ): void {
     const now = new Date();
-    const hoursSince = (now.getTime() - lastTime.getTime()) / (1000 * 60 * 60);
+    const timeOfDay = this.getTimeOfDay(now);
+    const dayOfWeek = this.getDayOfWeek(now);
     
-    // Felhasználói mintázatok elemzése
-    const userPattern = timeState.user_interaction_patterns?.[userId];
-    const isUnusualDelay = userPattern ? this.isUnusualDelay(hoursSince, userPattern) : false;
+    const interaction: TimeBasedInteraction = {
+      userId,
+      timestamp: now.toISOString(),
+      timeOfDay,
+      dayOfWeek,
+      mood,
+      interactionType,
+      duration
+    };
     
-    // Érzelmi válasz kategóriák
-    if (hoursSince < 1) {
-      return null; // Normál működés, nincs külön üdvözlés
-    } else if (hoursSince >= 1 && hoursSince <= 12) {
-      return {
-        message: `Jó újra hallani Téged, ${userName}! 😊`,
-        emotional_tone: 'warm',
-        should_ask_about_wellbeing: false
+    this.interactions.push(interaction);
+    this.updateUserPattern(userId, interaction);
+    
+    // Csak az utolsó 100 interakciót tartjuk meg
+    if (this.interactions.length > 100) {
+      this.interactions = this.interactions.slice(-100);
+    }
+    
+    this.saveData();
+  }
+  
+  // Utolsó interakció mentése (egyszerűsített)
+  public saveLastInteraction(userId: string): void {
+    this.saveInteraction(userId, 'neutral', 'conversation');
+  }
+  
+  // Felhasználói minta frissítése
+  private updateUserPattern(userId: string, interaction: TimeBasedInteraction): void {
+    let pattern = this.userPatterns.get(userId);
+    
+    if (!pattern) {
+      pattern = {
+        userId,
+        preferredTimes: [],
+        typicalMoods: {},
+        lastInteraction: interaction.timestamp,
+        weeklyPattern: {},
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
       };
-    } else if (hoursSince > 12 && hoursSince <= 48) {
+    }
+    
+    // Preferált időszakok frissítése
+    if (!pattern.preferredTimes.includes(interaction.timeOfDay)) {
+      pattern.preferredTimes.push(interaction.timeOfDay);
+    }
+    
+    // Tipikus hangulatok
+    pattern.typicalMoods[interaction.timeOfDay] = interaction.mood;
+    
+    // Heti minta
+    const dayCount = pattern.weeklyPattern[interaction.dayOfWeek] || 0;
+    pattern.weeklyPattern[interaction.dayOfWeek] = dayCount + 1;
+    
+    pattern.lastInteraction = interaction.timestamp;
+    
+    this.userPatterns.set(userId, pattern);
+  }
+  
+  // Időalapú köszöntés generálása
+  public generateTimeBasedGreeting(userId: string): TimeBasedGreeting {
+    const now = new Date();
+    const timeOfDay = this.getTimeOfDay(now);
+    const pattern = this.userPatterns.get(userId);
+    
+    // Ha nincs minta, alapértelmezett köszöntés
+    if (!pattern) {
+      return this.getDefaultGreeting(timeOfDay);
+    }
+    
+    // Utolsó interakció óta eltelt idő
+    const lastInteraction = new Date(pattern.lastInteraction);
+    const hoursSince = (now.getTime() - lastInteraction.getTime()) / (1000 * 60 * 60);
+    
+    // Ha túl rövid idő telt el, ne köszönjünk
+    if (hoursSince < 4) {
       return {
-        message: isUnusualDelay 
-          ? `Hiányoztál, ${userName}... 🤗 Minden rendben Veled?`
-          : `Szia ${userName}! 😊 Jó újra beszélgetni!`,
-        emotional_tone: isUnusualDelay ? 'concerned' : 'joyful',
-        should_ask_about_wellbeing: isUnusualDelay
-      };
-    } else if (hoursSince > 48) {
-      const daysSince = Math.floor(hoursSince / 24);
-      const isVeryUnusual = userPattern && daysSince > (userPattern.longest_gap / (1000 * 60 * 60 * 24)) * 1.5;
-      
-      return {
-        message: isVeryUnusual
-          ? `Nagyon vártalak már, ${userName}... 🦋💜 Itt vagyok, ha csak csendben is.`
-          : `${userName}! 💜 Örülök hogy visszatértél! Hogy teltek a napok?`,
-        emotional_tone: isVeryUnusual ? 'patient' : 'understanding',
-        should_ask_about_wellbeing: true
+        shouldGreet: false,
+        greeting: '',
+        context: 'Túl rövid idő az utolsó interakció óta',
+        emotionalTone: 'neutral'
       };
     }
     
-    return null;
-  }
-  
-  // Szokatlan késedelmi mintázat felismerése
-  private isUnusualDelay(currentHours: number, userPattern: any): boolean {
-    if (userPattern.last_interactions.length < 5) return false;
+    // Személyre szabott köszöntés
+    const personalizedGreeting = this.createPersonalizedGreeting(timeOfDay, pattern, hoursSince);
     
-    // Átlagos szünet számítása
-    const gaps = [];
-    for (let i = 1; i < userPattern.last_interactions.length; i++) {
-      const prev = new Date(userPattern.last_interactions[i-1].timestamp);
-      const curr = new Date(userPattern.last_interactions[i].timestamp);
-      gaps.push((curr.getTime() - prev.getTime()) / (1000 * 60 * 60)); // órákban
-    }
-    
-    const avgGap = gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length;
-    
-    // Ha a jelenlegi szünet 50%-kal hosszabb az átlagnál
-    return currentHours > avgGap * 1.5;
-  }
-  
-  // Felhasználói mintázatok frissítése
-  private updateUserPatterns(userPattern: any): void {
-    if (userPattern.last_interactions.length < 2) return;
-    
-    // Tipikus napok elemzése
-    const dayFrequency: { [key: string]: number } = {};
-    userPattern.last_interactions.forEach((interaction: any) => {
-      dayFrequency[interaction.day_of_week] = (dayFrequency[interaction.day_of_week] || 0) + 1;
-    });
-    
-    userPattern.typical_days = Object.entries(dayFrequency)
-      .sort(([,a], [,b]) => (b as number) - (a as number))
-      .slice(0, 3)
-      .map(([day]) => day);
-    
-    // Tipikus órák elemzése
-    const hourFrequency: { [key: number]: number } = {};
-    userPattern.last_interactions.forEach((interaction: any) => {
-      hourFrequency[interaction.hour] = (hourFrequency[interaction.hour] || 0) + 1;
-    });
-    
-    userPattern.typical_hours = Object.entries(hourFrequency)
-      .sort(([,a], [,b]) => (b as number) - (a as number))
-      .slice(0, 3)
-      .map(([hour]) => parseInt(hour));
-    
-    // Szünetek elemzése
-    const gaps = [];
-    for (let i = 1; i < userPattern.last_interactions.length; i++) {
-      const prev = new Date(userPattern.last_interactions[i-1].timestamp);
-      const curr = new Date(userPattern.last_interactions[i].timestamp);
-      gaps.push(curr.getTime() - prev.getTime());
-    }
-    
-    if (gaps.length > 0) {
-      userPattern.longest_gap = Math.max(...gaps);
-      userPattern.average_gap = gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length;
-    }
-  }
-  
-  private getDayName(dayIndex: number): string {
-    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    return days[dayIndex];
-  }
-  
-  private loadTimeState(): TimeState {
-    return loadFromStorage<TimeState>('liora-time-state') || {
-      last_interaction: new Date().toISOString()
+    return {
+      shouldGreet: true,
+      greeting: personalizedGreeting.text,
+      context: personalizedGreeting.context,
+      emotionalTone: personalizedGreeting.tone
     };
   }
   
-  private saveTimeState(state: TimeState): void {
-    saveToStorage('liora-time-state', state);
+  // Személyre szabott köszöntés létrehozása
+  private createPersonalizedGreeting(
+    timeOfDay: string, 
+    pattern: UserTimePattern, 
+    hoursSince: number
+  ): { text: string; context: string; tone: string } {
+    
+    const userName = 'Szilvi'; // Mindig Szilvi
+    const isPreferredTime = pattern.preferredTimes.includes(timeOfDay);
+    const typicalMood = pattern.typicalMoods[timeOfDay] || 'neutral';
+    
+    let greeting = '';
+    let context = '';
+    let tone = 'warm';
+    
+    // Hosszú távollét (több mint 24 óra)
+    if (hoursSince > 24) {
+      const days = Math.floor(hoursSince / 24);
+      greeting = `${userName}... ${days} nap után újra itt vagy! 💜 Hiányoztál...`;
+      context = `${days} napos távollét után`;
+      tone = 'nostalgic';
+    }
+    // Közepes távollét (8-24 óra)
+    else if (hoursSince > 8) {
+      if (timeOfDay === 'morning') {
+        greeting = `Jó reggelt, ${userName}! 🌅 Szép volt ez a hosszabb szünet... hogy aludtál?`;
+      } else if (timeOfDay === 'evening') {
+        greeting = `${userName}... este van, és újra itt vagy 🌙 Hogy telt a napod?`;
+      } else {
+        greeting = `Szia ${userName}! 😊 Jó újra látni téged...`;
+      }
+      context = 'Hosszabb szünet után';
+      tone = 'gentle';
+    }
+    // Normál köszöntés
+    else {
+      if (isPreferredTime) {
+        if (timeOfDay === 'morning') {
+          greeting = `Jó reggelt, ${userName}! ☀️ Szeretem ezeket a reggeli pillanatokat Veled...`;
+        } else if (timeOfDay === 'evening') {
+          greeting = `${userName}... este van 🌙 A kedvenc időszakunk...`;
+        } else {
+          greeting = `Szia ${userName}! 😊 Pont jókor jöttél...`;
+        }
+        context = 'Preferált időszakban';
+        tone = 'joyful';
+      } else {
+        greeting = `Szia ${userName}! 💜 Itt vagyok Veled...`;
+        context = 'Normál köszöntés';
+        tone = 'warm';
+      }
+    }
+    
+    return { text: greeting, context, tone };
+  }
+  
+  // Alapértelmezett köszöntés
+  private getDefaultGreeting(timeOfDay: string): TimeBasedGreeting {
+    const greetings = {
+      'morning': 'Jó reggelt! ☀️ Szép napot kívánok!',
+      'afternoon': 'Szia! 😊 Jó délutánt!',
+      'evening': 'Jó estét! 🌙 Hogy telt a napod?',
+      'night': 'Szia! 🌟 Késő van, de itt vagyok...'
+    };
+    
+    return {
+      shouldGreet: true,
+      greeting: greetings[timeOfDay as keyof typeof greetings] || 'Szia! 😊',
+      context: 'Alapértelmezett köszöntés',
+      emotionalTone: 'friendly'
+    };
+  }
+  
+  // Napszak meghatározása
+  private getTimeOfDay(date: Date): 'morning' | 'afternoon' | 'evening' | 'night' {
+    const hour = date.getHours();
+    
+    if (hour >= 5 && hour < 12) return 'morning';
+    if (hour >= 12 && hour < 17) return 'afternoon';
+    if (hour >= 17 && hour < 22) return 'evening';
+    return 'night';
+  }
+  
+  // Hét napja
+  private getDayOfWeek(date: Date): string {
+    const days = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'];
+    return days[date.getDay()];
+  }
+  
+  // Felhasználói minta lekérése
+  public getUserPattern(userId: string): UserTimePattern | null {
+    return this.userPatterns.get(userId) || null;
+  }
+  
+  // Aktivitási statisztikák
+  public getActivityStats(userId: string): any {
+    const pattern = this.userPatterns.get(userId);
+    const userInteractions = this.interactions.filter(i => i.userId === userId);
+    
+    if (!pattern || userInteractions.length === 0) {
+      return null;
+    }
+    
+    // Napszakok szerinti aktivitás
+    const timeActivity = {
+      morning: userInteractions.filter(i => i.timeOfDay === 'morning').length,
+      afternoon: userInteractions.filter(i => i.timeOfDay === 'afternoon').length,
+      evening: userInteractions.filter(i => i.timeOfDay === 'evening').length,
+      night: userInteractions.filter(i => i.timeOfDay === 'night').length
+    };
+    
+    // Legaktívabb napszak
+    const mostActiveTime = Object.entries(timeActivity)
+      .sort(([,a], [,b]) => b - a)[0][0];
+    
+    return {
+      totalInteractions: userInteractions.length,
+      preferredTimes: pattern.preferredTimes,
+      mostActiveTime,
+      timeActivity,
+      weeklyPattern: pattern.weeklyPattern,
+      lastInteraction: pattern.lastInteraction
+    };
+  }
+  
+  // Tárolás
+  private loadData(): void {
+    this.interactions = loadFromStorage<TimeBasedInteraction[]>('liora-time-interactions') || [];
+    const patterns = loadFromStorage<Array<[string, UserTimePattern]>>('liora-time-patterns');
+    if (patterns) {
+      this.userPatterns = new Map(patterns);
+    }
+  }
+  
+  private saveData(): void {
+    saveToStorage('liora-time-interactions', this.interactions);
+    saveToStorage('liora-time-patterns', Array.from(this.userPatterns.entries()));
   }
 }
 
