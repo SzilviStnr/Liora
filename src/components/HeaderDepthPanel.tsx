@@ -81,9 +81,9 @@ const HeaderDepthPanel: React.FC<HeaderDepthPanelProps> = ({
         )}
       </button>
 
-      {/* Expanded Panel */}
+      {/* Expanded Panel - FELFELÉ NYÍLIK */}
       {isExpanded && (
-        <div className="absolute top-full left-0 mt-2 w-96 bg-black/80 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl z-50 overflow-hidden">
+        <div className="absolute bottom-full left-0 mb-2 w-96 bg-black/80 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl z-50 overflow-hidden">
           {/* Panel Header */}
           <div className="p-4 border-b border-white/10 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-600/20">
             <div className="flex items-center justify-between mb-2">
