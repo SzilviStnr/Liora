@@ -178,7 +178,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setConversationMessages(updatedMessages);
 
     // A szerkesztett üzenet lokálisan marad, NEM küldjük el újra
-    console.log(`✏️ Üzenet szerkesztve: ${messageId}`);
+    console.log(`Üzenet szerkesztve: ${messageId}`);
   };
 
   const generateLioraResponse = async (userMessage: string, conversationContext: Message[], actualUserName: string) => {
