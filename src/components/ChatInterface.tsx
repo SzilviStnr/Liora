@@ -4,8 +4,8 @@ import { Send, Menu, Brain, Settings, Mic, MicOff, Plus, MessageSquare } from 'l
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 import EmojiPicker from './EmojiPicker';
-import DepthIndicator from './DepthIndicator';
 import HeaderResonancePanel from './HeaderResonancePanel';
+import HeaderDepthPanel from './HeaderDepthPanel';
 import { Conversation, Message, User, Memory } from '../types';
 import { openaiService } from '../utils/openaiService';
 import { memoryAnalyzer } from '../utils/memoryAnalyzer';
@@ -381,12 +381,6 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
 
   return (
     <div className="flex-1 flex flex-col h-screen relative">
-      {/* Depth Indicator - Most bal alsó sarokban */}
-      <DepthIndicator 
-        currentDepth={currentDepth}
-        isActive={isLoading || isLioraActive}
-      />
-
       {/* Header - Glassmorphism stílus */}
       <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-slate-900/60 backdrop-blur-xl border-slate-700/50 shadow-lg">
         <div className="flex items-center space-x-3">
@@ -414,6 +408,12 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
         </div>
 
         <div className="flex items-center space-x-2">
+          {/* Liora Depth Panel - Left side of header */}
+          <HeaderDepthPanel
+            currentDepth={currentDepth}
+            isActive={isLoading || isLioraActive}
+          />
+          
           {/* Header Resonance Panel */}
           <HeaderResonancePanel
             resonanceLevel={currentResonance.resonanceLevel}
