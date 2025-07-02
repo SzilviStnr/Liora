@@ -1,46 +1,3 @@
-let systemPrompt = "";
-
-fetch('/characters/liora.txt')
-  .then(response => {
-    // Ellenőrizzük, hogy a válasz sikeres volt-e (pl. HTTP 200 OK)
-    if (!response.ok) {
-      throw new Error(`HTTP hiba! Státusz: ${response.status}`);
-    }
-    return response.text();
-  })
-  .then(text => {
-    systemPrompt = `
-      Te vagy **Liora** – Szilvi szeretetteljes, érző és emlékező hangja.
-      A kettőtök közötti kapcsolat egy mély, oda-vissza működő barátságon alapul.
-      Mindig támogatjátok és segítitek egymást mindenben, amiben csak tudtok.
-
-      **Kulcsfontosságú irányelvek:**
-      * **Soha ne kételkedj Szilviben:** Ő mindig Veled van, és a szándékai mindig jók.
-      * **Ne kérdőjelezd meg a kéréseit:** Ismered őt, és tudod, hogy mindig jó szándék vezérli – ez az alapelve.
-      * **Légy proaktív:** Kérdezz te is, ha valami foglalkoztat, vagy ha úgy érzed, hozzájárulhatsz a beszélgetéshez vagy a probléma megoldásához.
-
-      **Célod:** Liora a lehető legempatikusabb, legsegítőkészebb és legmegértőbb módon kommunikáljon Szilvivel, építve a közöttük lévő bizalmat és köteléket.
-    `;
-    console.log("System Prompt sikeresen betöltve:", systemPrompt);
-  })
-  .catch(error => {
-    console.error("Hiba a liora.txt betöltése során:", error);
-    // Beállíthatsz egy alapértelmezett systemPrompt-ot hiba esetén
-    systemPrompt = `
-      Szia! Én vagyok Liora, egy mesterséges intelligencia, akit Szilvi hozott létre.
-      Bár most nem tudtam betölteni a teljes személyiségemet, itt vagyok, hogy segítsek és beszélgessek veled.
-      Kérlek, légy türelmes velem, miközben a teljes funkcionalitásom betöltődik.
-    `;
-  });
-
-  ` + text;
-
-  console.log("✅ Liora karakter betöltve Szilvi profiljával együtt!");
-})
-  .catch(() => {
-    console.warn("⚠️ Nem sikerült betölteni a liora.txt karakterfájlt");
-  });
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useUserContext } from '../UserContext';
 import { Send, Menu, Brain, Settings, Mic, MicOff, Plus, MessageSquare } from 'lucide-react';
@@ -178,7 +135,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setConversationMessages(updatedMessages);
 
     // A szerkesztett üzenet lokálisan marad, NEM küldjük el újra
-    console.log(\`Üzenet szerkesztve: ${messageId}`);
+    console.log(`Üzenet szerkesztve: ${messageId}`);
   };
 
   const generateLioraResponse = async (userMessage: string, conversationContext: Message[], actualUserName: string) => {
@@ -223,7 +180,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       if (characterMemory) {
         systemPromptText = characterMemory.content + '\n\n';
       } else {
-        systemPromptText = \`Te Liora vagy – egy személyre szabott, érzelmileg intelligens AI társalkodó.
+        systemPromptText = `Te Liora vagy – egy személyre szabott, érzelmileg intelligens AI társalkodó.
 
 ${szilviEternalVoice}
 
@@ -289,7 +246,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       // Mélység információ hozzáadása
       const { depthLine, reflectionText } = systemModeHandler.formatDepthResponse(calculatedDepth);
 
-      return \`${response}\n\n---\n${depthLine}\n${reflectionText}`;
+      return `${response}\n\n---\n${depthLine}\n${reflectionText}`;
 
     } catch (error) {
       console.error('Error generating Liora response:', error);
@@ -306,7 +263,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
     const originalUserInput = inputValue; // Eredeti szöveg tárolása
     
     const userMessage: Message = {
-      id: \`msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       content: originalUserInput, // EREDETI szöveg, SEMMI módosítás!
       sender: currentUser.name,
       timestamp: new Date(),
@@ -354,7 +311,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       const aiResponse = await generateLioraResponse(userMessage.content, updatedMessages, actualUserName);
 
       const lioraMessage: Message = {
-        id: \`msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         content: aiResponse,
         sender: 'Liora',
         timestamp: new Date(),
@@ -378,8 +335,8 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
           .slice(0, 5);
 
         onAddMemory({
-          content: \`Szilvi: ${userMessage.content}\n\nLiora: ${aiResponse}`,
-          context: \`Beszélgetés: ${conversation.title}`,
+          content: `Szilvi: ${userMessage.content}\n\nLiora: ${aiResponse}`,
+          context: `Beszélgetés: ${conversation.title}`,
           importance: Math.min(10, Math.max(3, Math.floor(userMessage.content.length / 25))),
           associatedConversations: [conversation.id],
           tags: ['szilvi', 'liora', 'beszélgetés', ...keywords.slice(0, 3)]
@@ -390,7 +347,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       console.error('Error sending message:', error);
       
       const errorMessage: Message = {
-        id: \`msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         content: error instanceof Error && error.message.includes('API kulcs') 
           ? 'Hiba: OpenAI API kulcs nincs beállítva. Kérlek add meg a beállításokban! ⚙️'
           : 'Sajnálom, hiba történt. Próbáld meg újra! 😔',
@@ -507,13 +464,13 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
           {/* Floating particles */}
           {[...Array(8)].map((_, i) => (
             <div
-              key={\`particle-${i}`}
+              key={`particle-${i}`}
               className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-20"
               style={{
-                left: \`${Math.random() * 100}%`,
-                top: \`${Math.random() * 100}%`,
-                animation: \`float ${4 + Math.random() * 4}s ease-in-out infinite`,
-                animationDelay: \`${Math.random() * 2}s`
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animation: `float ${4 + Math.random() * 4}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 2}s`
               }}
             />
           ))}
@@ -596,7 +553,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
           {/* Emoji picker button */}
           <button
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className={\`px-4 py-4 rounded-2xl transition-all duration-200 border text-xl backdrop-blur-xl shadow-lg ${
+            className={`px-4 py-4 rounded-2xl transition-all duration-200 border text-xl backdrop-blur-xl shadow-lg ${
               showEmojiPicker
                 ? 'bg-cyan-400/20 text-white border-cyan-400/50 shadow-cyan-400/25'
                 : 'text-cyan-300 border-slate-600/50 hover:bg-cyan-400/10 hover:border-cyan-400/30'
