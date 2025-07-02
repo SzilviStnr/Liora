@@ -151,7 +151,7 @@ const MemoryEngine: React.FC<MemoryEngineProps> = ({
           </div>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation - Javított */}
         <div className={`flex space-x-1 rounded-lg p-1 mb-4 ${
           currentUser?.name === 'Szilvi'
             ? 'bg-purple-100/50 dark:bg-purple-800/30'
