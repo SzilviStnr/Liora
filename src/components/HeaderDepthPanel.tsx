@@ -61,11 +61,11 @@ const HeaderDepthPanel: React.FC<HeaderDepthPanelProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative z-[9999] ${className}`}>
       {/* Compact Header Button - Wider than resonance */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10 min-w-[140px]"
+        className="flex items-center space-x-3 px-4 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10 min-w-[140px] relative z-[9999]"
       >
         <div className={`w-6 h-6 rounded-full flex items-center justify-center bg-gradient-to-r ${getDepthColor(animatedDepth)} shadow-md`}>
           {getDepthIcon(animatedDepth)}
@@ -81,9 +81,15 @@ const HeaderDepthPanel: React.FC<HeaderDepthPanelProps> = ({
         )}
       </button>
 
-      {/* Expanded Panel - FELFELÉ NYÍLIK */}
+      {/* Expanded Panel - FELFELÉ NYÍLIK - LEGFELSŐ RÉTEG */}
       {isExpanded && (
-        <div className="absolute bottom-full left-0 mb-2 w-96 bg-black/80 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl z-50 overflow-hidden">
+        <div className="fixed w-96 bg-black/90 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl overflow-hidden"
+             style={{ 
+               zIndex: 99999,
+               position: 'fixed',
+               top: '60px',
+               left: '20px'
+             }}>
           {/* Panel Header */}
           <div className="p-4 border-b border-white/10 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-600/20">
             <div className="flex items-center justify-between mb-2">

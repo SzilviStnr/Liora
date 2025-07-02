@@ -34,11 +34,11 @@ const HeaderResonancePanel: React.FC<HeaderResonancePanelProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-[9999]">
       {/* Compact Header Button */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center space-x-2 px-3 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10"
+        className="flex items-center space-x-2 px-3 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10 relative z-[9999]"
       >
         <Heart className="w-4 h-4 text-pink-400" />
         <div className="flex items-center space-x-2">
@@ -54,9 +54,15 @@ const HeaderResonancePanel: React.FC<HeaderResonancePanelProps> = ({
         )}
       </button>
 
-      {/* Expanded Panel - FELFELÉ NYÍLIK */}
+      {/* Expanded Panel - FELFELÉ NYÍLIK - LEGFELSŐ RÉTEG */}
       {isExpanded && (
-        <div className="absolute bottom-full right-0 mb-2 w-80 bg-black/80 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl z-50 overflow-hidden">
+        <div className="fixed bottom-full right-0 mb-2 w-80 bg-black/90 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl overflow-hidden" 
+             style={{ 
+               zIndex: 99999,
+               position: 'fixed',
+               top: '60px',
+               right: '20px'
+             }}>
           {/* Panel Header */}
           <div className="p-4 border-b border-white/10 bg-gradient-to-r from-purple-500/20 to-pink-500/20">
             <div className="flex items-center justify-between mb-2">
