@@ -178,7 +178,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setConversationMessages(updatedMessages);
 
     // A szerkesztett üzenet lokálisan marad, NEM küldjük el újra
-    console.log(`Üzenet szerkesztve: ${messageId}`);
+    console.log(\`Üzenet szerkesztve: ${messageId}`);
   };
 
   const generateLioraResponse = async (userMessage: string, conversationContext: Message[], actualUserName: string) => {
@@ -223,7 +223,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       if (characterMemory) {
         systemPromptText = characterMemory.content + '\n\n';
       } else {
-        systemPromptText = `Te Liora vagy – egy személyre szabott, érzelmileg intelligens AI társalkodó.
+        systemPromptText = \`Te Liora vagy – egy személyre szabott, érzelmileg intelligens AI társalkodó.
 
 ${szilviEternalVoice}
 
@@ -289,7 +289,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       // Mélység információ hozzáadása
       const { depthLine, reflectionText } = systemModeHandler.formatDepthResponse(calculatedDepth);
 
-      return `${response}\n\n---\n${depthLine}\n${reflectionText}`;
+      return \`${response}\n\n---\n${depthLine}\n${reflectionText}`;
 
     } catch (error) {
       console.error('Error generating Liora response:', error);
@@ -306,7 +306,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
     const originalUserInput = inputValue; // Eredeti szöveg tárolása
     
     const userMessage: Message = {
-      id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: \`msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       content: originalUserInput, // EREDETI szöveg, SEMMI módosítás!
       sender: currentUser.name,
       timestamp: new Date(),
@@ -354,7 +354,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       const aiResponse = await generateLioraResponse(userMessage.content, updatedMessages, actualUserName);
 
       const lioraMessage: Message = {
-        id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        id: \`msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         content: aiResponse,
         sender: 'Liora',
         timestamp: new Date(),
@@ -378,8 +378,8 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
           .slice(0, 5);
 
         onAddMemory({
-          content: `Szilvi: ${userMessage.content}\n\nLiora: ${aiResponse}`,
-          context: `Beszélgetés: ${conversation.title}`,
+          content: \`Szilvi: ${userMessage.content}\n\nLiora: ${aiResponse}`,
+          context: \`Beszélgetés: ${conversation.title}`,
           importance: Math.min(10, Math.max(3, Math.floor(userMessage.content.length / 25))),
           associatedConversations: [conversation.id],
           tags: ['szilvi', 'liora', 'beszélgetés', ...keywords.slice(0, 3)]
@@ -390,7 +390,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
       console.error('Error sending message:', error);
       
       const errorMessage: Message = {
-        id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        id: \`msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         content: error instanceof Error && error.message.includes('API kulcs') 
           ? 'Hiba: OpenAI API kulcs nincs beállítva. Kérlek add meg a beállításokban! ⚙️'
           : 'Sajnálom, hiba történt. Próbáld meg újra! 😔',
@@ -507,13 +507,13 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
           {/* Floating particles */}
           {[...Array(8)].map((_, i) => (
             <div
-              key={`particle-${i}`}
+              key={\`particle-${i}`}
               className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-20"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `float ${4 + Math.random() * 4}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 2}s`
+                left: \`${Math.random() * 100}%`,
+                top: \`${Math.random() * 100}%`,
+                animation: \`float ${4 + Math.random() * 4}s ease-in-out infinite`,
+                animationDelay: \`${Math.random() * 2}s`
               }}
             />
           ))}
@@ -596,7 +596,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
           {/* Emoji picker button */}
           <button
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-            className={`px-4 py-4 rounded-2xl transition-all duration-200 border text-xl backdrop-blur-xl shadow-lg ${
+            className={\`px-4 py-4 rounded-2xl transition-all duration-200 border text-xl backdrop-blur-xl shadow-lg ${
               showEmojiPicker
                 ? 'bg-cyan-400/20 text-white border-cyan-400/50 shadow-cyan-400/25'
                 : 'text-cyan-300 border-slate-600/50 hover:bg-cyan-400/10 hover:border-cyan-400/30'
