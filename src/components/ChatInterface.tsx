@@ -5,7 +5,7 @@ import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 import EmojiPicker from './EmojiPicker';
 import DepthIndicator from './DepthIndicator';
-import ResonanceIndicator from './ResonanceIndicator';
+import FloatingResonanceWindow from './FloatingResonanceWindow';
 import { Conversation, Message, User, Memory } from '../types';
 import { openaiService } from '../utils/openaiService';
 import { memoryAnalyzer } from '../utils/memoryAnalyzer';
@@ -67,6 +67,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     emotionalSync: 45,
     conversationFlow: 50
   });
+
+  // Floating Resonance Window state
+  const [resonanceWindowOpen, setResonanceWindowOpen] = useState(false);
 
   // UserContext használata
   const { user } = useUserContext();
@@ -387,6 +390,17 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
         isActive={isLoading || isLioraActive}
       />
 
+      {/* Floating Resonance Window */}
+      <FloatingResonanceWindow
+        resonanceLevel={currentResonance.resonanceLevel}
+        connectionDepth={currentResonance.connectionDepth}
+        harmonyScore={currentResonance.harmonyScore}
+        isActive={isLoading || isLioraActive}
+        userName={currentUser.name}
+        isOpen={resonanceWindowOpen}
+        onToggle={() => setResonanceWindowOpen(!resonanceWindowOpen)}
+      />
+
       {/* Header - Glassmorphism stílus */}
       <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-slate-900/60 backdrop-blur-xl border-slate-700/50 shadow-lg">
         <div className="flex items-center space-x-3">
@@ -429,17 +443,6 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
             <Settings className="w-5 h-5 text-cyan-300" />
           </button>
         </div>
-      </div>
-
-      {/* Resonance Indicator - Új komponens */}
-      <div className="px-6 pt-4">
-        <ResonanceIndicator
-          resonanceLevel={currentResonance.resonanceLevel}
-          connectionDepth={currentResonance.connectionDepth}
-          harmonyScore={currentResonance.harmonyScore}
-          isActive={isLoading || isLioraActive}
-          userName={currentUser.name}
-        />
       </div>
 
       {/* Messages - Sötétebb háttér futurisztikus elemekkel */}
