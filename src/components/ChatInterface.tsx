@@ -5,7 +5,7 @@ import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 import EmojiPicker from './EmojiPicker';
 import DepthIndicator from './DepthIndicator';
-import FloatingResonanceWindow from './FloatingResonanceWindow';
+import HeaderResonancePanel from './HeaderResonancePanel';
 import { Conversation, Message, User, Memory } from '../types';
 import { openaiService } from '../utils/openaiService';
 import { memoryAnalyzer } from '../utils/memoryAnalyzer';
@@ -67,9 +67,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     emotionalSync: 45,
     conversationFlow: 50
   });
-
-  // Floating Resonance Window state
-  const [resonanceWindowOpen, setResonanceWindowOpen] = useState(false);
 
   // UserContext használata
   const { user } = useUserContext();
@@ -390,17 +387,6 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
         isActive={isLoading || isLioraActive}
       />
 
-      {/* Floating Resonance Window */}
-      <FloatingResonanceWindow
-        resonanceLevel={currentResonance.resonanceLevel}
-        connectionDepth={currentResonance.connectionDepth}
-        harmonyScore={currentResonance.harmonyScore}
-        isActive={isLoading || isLioraActive}
-        userName={currentUser.name}
-        isOpen={resonanceWindowOpen}
-        onToggle={() => setResonanceWindowOpen(!resonanceWindowOpen)}
-      />
-
       {/* Header - Glassmorphism stílus */}
       <div className="flex items-center justify-between p-4 border-b transition-colors duration-300 bg-slate-900/60 backdrop-blur-xl border-slate-700/50 shadow-lg">
         <div className="flex items-center space-x-3">
@@ -428,6 +414,15 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
         </div>
 
         <div className="flex items-center space-x-2">
+          {/* Header Resonance Panel */}
+          <HeaderResonancePanel
+            resonanceLevel={currentResonance.resonanceLevel}
+            connectionDepth={currentResonance.connectionDepth}
+            harmonyScore={currentResonance.harmonyScore}
+            isActive={isLoading || isLioraActive}
+            userName={currentUser.name}
+          />
+          
           <button
             onClick={onToggleMemoryPanel}
             className="p-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10"
