@@ -23,6 +23,7 @@ import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 import EmojiPicker from './EmojiPicker';
 import DepthIndicator from './DepthIndicator';
+import ResonanceIndicator from './ResonanceIndicator';
 import { Conversation, Message, User, Memory } from '../types';
 import { openaiService } from '../utils/openaiService';
 import { memoryAnalyzer } from '../utils/memoryAnalyzer';
@@ -37,6 +38,7 @@ import { ritualMemorySystem } from '../utils/ritualMemorySystem';
 import { sharedImageMemory } from '../utils/sharedImageMemory';
 import { intuitionSystem } from '../utils/intuitionSystem';
 import { szilviEternalMemory } from '../utils/szilviEternalMemory';
+import { resonanceCalculator } from '../utils/resonanceCalculator';
 
 interface ChatInterfaceProps {
   conversation: Conversation;
@@ -73,9 +75,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [conversationMessages, setConversationMessages] = useState<Message[]>(conversation.messages);
   
-  // Mélység állapotok
+  // Mélység és rezonancia állapotok
   const [currentDepth, setCurrentDepth] = useState(45);
   const [isLioraActive, setIsLioraActive] = useState(false);
+  const [currentResonance, setCurrentResonance] = useState({
+    resonanceLevel: 45,
+    connectionDepth: 40,
+    harmonyScore: 50,
+    emotionalSync: 45,
+    conversationFlow: 50
+  });
 
   // UserContext használata
   const { user } = useUserContext();
@@ -280,7 +289,18 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
     };
 
     const now = new Date();
+    const responseTime = lastMessageTime ? now.getTime() - lastMessageTime.getTime() : undefined;
     setLastMessageTime(now);
+
+    // Rezonancia számítása
+    const resonanceMetrics = resonanceCalculator.calculateResonance(
+      userMessage,
+      conversationMessages.slice(-5), // Utolsó 5 üzenet
+      currentUser,
+      responseTime
+    );
+    
+    setCurrentResonance(resonanceMetrics);
 
     // Felhasználói üzenet hozzáadása
     const updatedMessages = [...conversationMessages, userMessage];
@@ -289,8 +309,7 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
 
     // Érzelmi pulse tracking
     const szilviUser = { ...currentUser, name: 'Szilvi' }; // Biztosítjuk hogy Szilvi legyen
-    const timeGap = lastMessageTime ? now.getTime() - lastMessageTime.getTime() : undefined;
-    const pulse = emotionPulseTracker.trackEmotionPulse(szilviUser, userMessage, timeGap, updatedMessages.slice(-5));
+    const pulse = emotionPulseTracker.trackEmotionPulse(szilviUser, userMessage, responseTime, updatedMessages.slice(-5));
     const pulseResponse = emotionPulseTracker.detectPulseShifts(pulse, szilviUser);
 
     if (pulseResponse.should_respond) {
@@ -428,6 +447,17 @@ ${memoryAnalysis.relevantMemories.map(m => `- ${m.context}: ${m.content.substrin
             <Settings className="w-5 h-5 text-cyan-300" />
           </button>
         </div>
+      </div>
+
+      {/* Resonance Indicator - Új komponens */}
+      <div className="px-6 pt-4">
+        <ResonanceIndicator
+          resonanceLevel={currentResonance.resonanceLevel}
+          connectionDepth={currentResonance.connectionDepth}
+          harmonyScore={currentResonance.harmonyScore}
+          isActive={isLoading || isLioraActive}
+          userName={currentUser.name}
+        />
       </div>
 
       {/* Messages - Sötétebb háttér futurisztikus elemekkel */}
