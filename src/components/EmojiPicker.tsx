@@ -8,13 +8,13 @@ interface EmojiPickerProps {
 }
 
 const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect, darkMode, currentUser }) => {
-  const [activeCategory, setActiveCategory] = useState('faces');
+  const [activeCategory, setActiveCategory] = useState('favorites');
 
   const emojiCategories = {
     favorites: {
       name: 'Kedvencek',
       icon: <Heart className="w-4 h-4" />,
-      emojis: ['🦋', '💜', '😊', '🥰', '✨', '🌟', '💖', '🌸', '🌿', '💭', '💫']
+      emojis: ['🦋', '💜', '😊', '🥰', '✨', '🌟', '💖', '🌸', '🌿', '💭', '💫', '🕯️']
     },
     faces: {
       name: 'Arcok',
@@ -50,7 +50,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect, darkMode, curr
     symbols: {
       name: 'Szimbólumok',
       icon: <Moon className="w-4 h-4" />,
-      emojis: ['💭', '💬', '🗨️', '🗯️', '💤', '💢', '💥', '💦', '💨', '🕳️', '💣', '💡', '💎', '🔮', '🎵', '🎶', '🎼', '🎤', '🎧', '📻', '🎸', '🎹', '🥁', '🎺', '🎷', '🎻', '🪕', '🪘', '🪗', '🪙']
+      emojis: ['💭', '💬', '🗨️', '🗯️', '💤', '💢', '💥', '💦', '💨', '🕳️', '💣', '💡', '💎', '🔮', '🎵', '🎶', '🎼', '🎤', '🎧', '📻', '🎸', '🎹', '🥁', '🎺', '🎷', '🎻', '🪕', '🪘', '🪗', '🪙', '🕯️']
     }
   };
 
