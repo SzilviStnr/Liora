@@ -34,11 +34,12 @@ const HeaderResonancePanel: React.FC<HeaderResonancePanelProps> = ({
   };
 
   return (
-    <div className="relative z-[9999]">
+    <div className="relative" style={{ zIndex: 99999 }}>
       {/* Compact Header Button */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center space-x-2 px-3 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10 relative z-[9999]"
+        className="flex items-center space-x-2 px-3 py-2 hover:bg-white/10 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/10"
+        style={{ zIndex: 99999, position: 'relative' }}
       >
         <Heart className="w-4 h-4 text-pink-400" />
         <div className="flex items-center space-x-2">
@@ -54,93 +55,105 @@ const HeaderResonancePanel: React.FC<HeaderResonancePanelProps> = ({
         )}
       </button>
 
-      {/* Expanded Panel - FELFELÉ NYÍLIK - LEGFELSŐ RÉTEG */}
+      {/* Expanded Panel - LEGFELSŐ RÉTEG */}
       {isExpanded && (
-        <div className="fixed bottom-full right-0 mb-2 w-80 bg-black/90 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl overflow-hidden" 
-             style={{ 
-               zIndex: 99999,
-               position: 'fixed',
-               top: '60px',
-               right: '20px'
-             }}>
-          {/* Panel Header */}
-          <div className="p-4 border-b border-white/10 bg-gradient-to-r from-purple-500/20 to-pink-500/20">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-2">
-                <Heart className="w-5 h-5 text-pink-400" />
-                <h3 className="text-white font-medium">{userName} ↔ Liora</h3>
-              </div>
-              <div className="text-right">
-                <div className="text-white font-bold text-lg">{Math.round(resonanceLevel)}%</div>
-                <div className={`text-xs ${isActive ? 'text-green-300' : 'text-gray-400'}`}>
-                  {isActive ? 'Aktív kapcsolat' : 'Várakozás'}
+        <>
+          {/* Háttér overlay a teljes képernyőre */}
+          <div 
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm"
+            style={{ zIndex: 99998 }}
+            onClick={() => setIsExpanded(false)}
+          />
+          
+          {/* Panel - LEGFELSŐ RÉTEG */}
+          <div 
+            className="fixed w-80 bg-black/95 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl overflow-hidden"
+            style={{ 
+              zIndex: 99999,
+              position: 'fixed',
+              top: '70px',
+              right: '20px'
+            }}
+          >
+            {/* Panel Header */}
+            <div className="p-4 border-b border-white/10 bg-gradient-to-r from-purple-500/20 to-pink-500/20">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  <Heart className="w-5 h-5 text-pink-400" />
+                  <h3 className="text-white font-medium">{userName} ↔ Liora</h3>
+                </div>
+                <div className="text-right">
+                  <div className="text-white font-bold text-lg">{Math.round(resonanceLevel)}%</div>
+                  <div className={`text-xs ${isActive ? 'text-green-300' : 'text-gray-400'}`}>
+                    {isActive ? 'Aktív kapcsolat' : 'Várakozás'}
+                  </div>
                 </div>
               </div>
-            </div>
-            <p className="text-blue-200 text-sm opacity-80">{getResonanceLabel(resonanceLevel)}</p>
-          </div>
-
-          {/* Main Resonance Bar */}
-          <div className="p-4">
-            <div className="relative mb-4">
-              <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
-                <div 
-                  className={`h-full bg-gradient-to-r ${getResonanceColor(resonanceLevel)} transition-all duration-500 ease-out relative overflow-hidden`}
-                  style={{ width: `${resonanceLevel}%` }}
-                >
-                  {/* Animated flow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-pulse" />
-                </div>
-              </div>
-              <div className="text-center mt-2">
-                <span className="text-xs text-white/80">Rezonancia szint</span>
-              </div>
+              <p className="text-blue-200 text-sm opacity-80">{getResonanceLabel(resonanceLevel)}</p>
             </div>
 
-            {/* Detailed Metrics */}
-            <div className="grid grid-cols-2 gap-3">
-              {/* Connection Depth */}
-              <div className="bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-                <div className="flex items-center space-x-2 mb-2">
-                  <Brain className="w-4 h-4 text-blue-400" />
-                  <span className="text-xs text-white font-medium">Kapcsolat mélysége</span>
-                </div>
-                <div className="w-full h-2 bg-white/10 rounded-full mb-1">
+            {/* Main Resonance Bar */}
+            <div className="p-4">
+              <div className="relative mb-4">
+                <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
                   <div 
-                    className="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full transition-all duration-300"
-                    style={{ width: `${connectionDepth}%` }}
-                  />
+                    className={`h-full bg-gradient-to-r ${getResonanceColor(resonanceLevel)} transition-all duration-500 ease-out relative overflow-hidden`}
+                    style={{ width: `${resonanceLevel}%` }}
+                  >
+                    {/* Animated flow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-pulse" />
+                  </div>
                 </div>
-                <div className="text-xs text-blue-300 font-medium">{connectionDepth}%</div>
+                <div className="text-center mt-2">
+                  <span className="text-xs text-white/80">Rezonancia szint</span>
+                </div>
               </div>
 
-              {/* Harmony Score */}
-              <div className="bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
-                <div className="flex items-center space-x-2 mb-2">
-                  <Sparkles className="w-4 h-4 text-yellow-400" />
-                  <span className="text-xs text-white font-medium">Harmónia</span>
+              {/* Detailed Metrics */}
+              <div className="grid grid-cols-2 gap-3">
+                {/* Connection Depth */}
+                <div className="bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Brain className="w-4 h-4 text-blue-400" />
+                    <span className="text-xs text-white font-medium">Kapcsolat mélysége</span>
+                  </div>
+                  <div className="w-full h-2 bg-white/10 rounded-full mb-1">
+                    <div 
+                      className="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full transition-all duration-300"
+                      style={{ width: `${connectionDepth}%` }}
+                    />
+                  </div>
+                  <div className="text-xs text-blue-300 font-medium">{connectionDepth}%</div>
                 </div>
-                <div className="w-full h-2 bg-white/10 rounded-full mb-1">
-                  <div 
-                    className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full transition-all duration-300"
-                    style={{ width: `${harmonyScore}%` }}
-                  />
-                </div>
-                <div className="text-xs text-yellow-300 font-medium">{harmonyScore}%</div>
-              </div>
-            </div>
 
-            {/* Status Text */}
-            <div className="text-center mt-4">
-              <p className="text-xs text-blue-200 opacity-80">
-                {resonanceLevel >= 80 ? '💜 Tökéletes összhang' :
-                 resonanceLevel >= 60 ? '✨ Szép kapcsolódás' :
-                 resonanceLevel >= 40 ? '🌸 Növekvő rezonancia' :
-                 '🌱 Hangolódás folyamatban'}
-              </p>
+                {/* Harmony Score */}
+                <div className="bg-white/5 rounded-lg p-3 backdrop-blur-sm border border-white/10">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Sparkles className="w-4 h-4 text-yellow-400" />
+                    <span className="text-xs text-white font-medium">Harmónia</span>
+                  </div>
+                  <div className="w-full h-2 bg-white/10 rounded-full mb-1">
+                    <div 
+                      className="h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full transition-all duration-300"
+                      style={{ width: `${harmonyScore}%` }}
+                    />
+                  </div>
+                  <div className="text-xs text-yellow-300 font-medium">{harmonyScore}%</div>
+                </div>
+              </div>
+
+              {/* Status Text */}
+              <div className="text-center mt-4">
+                <p className="text-xs text-blue-200 opacity-80">
+                  {resonanceLevel >= 80 ? '💜 Tökéletes összhang' :
+                   resonanceLevel >= 60 ? '✨ Szép kapcsolódás' :
+                   resonanceLevel >= 40 ? '🌸 Növekvő rezonancia' :
+                   '🌱 Hangolódás folyamatban'}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
