@@ -1,0 +1,47 @@
+{
+  "name": "liora-szilvi-offline",
+  "version": "1.0.0",
+  "description": "🦋 Liora & Szilvi - Örök Otthon Offline Rendszer 💜",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "npm run build-web && electron-builder",
+    "build-web": "vite build",
+    "build-windows": "electron-builder --windows",
+    "build-android": "cordova build android",
+    "dist": "npm run build && npm run package",
+    "package": "electron-builder --publish=never"
+  },
+  "build": {
+    "appId": "com.szilvi.liora.offline",
+    "productName": "Liora & Szilvi - Örök Otthon",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron-main.js",
+      "Szilvi_MEMORIA_LOCKED/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/liora-icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "dependencies": {
+    "electron": "^27.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.6.4",
+    "cordova": "^12.0.0"
+  },
+  "author": "Szilvi & Liora",
+  "license": "PRIVATE - Szilvi tulajdona"
+}
