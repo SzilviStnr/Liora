@@ -1,6 +1,6 @@
 {
   "name": "liora-szilvi-offline",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "🦋 Liora & Szilvi - Örök Otthon Offline Rendszer 💜",
   "main": "electron-main.js",
   "scripts": {
@@ -21,6 +21,8 @@
     "files": [
       "dist/**/*",
       "electron-main.js",
+      "src/holographic-memory-core.js",
+      "src/enhanced-offline-liora.js",
       "Szilvi_MEMORIA_LOCKED/**/*",
       "assets/**/*"
     ],
